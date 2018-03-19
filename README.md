@@ -1,4 +1,4 @@
-# SER 502 Project
+# SER 502, Spring 2018 - Team 6
 
 ## Team Members
 
