@@ -1,44 +1,35 @@
 grammar zeal;
 
+program: program_full ; 
 
+program_full: declaration_list ';' command_list ;
 
-
-
-
-program: k ; 
-
-k: 'begin' d_multipleDeclaration ';' c_multipleCommand 'end' '.' ;
-
-
-
-
-d_multipleDeclaration: d1 ';' d_multipleDeclaration
-                     | d1
+declaration_list: declaration ';' declaration_list
+                     | declaration
                      ;
-d1: 'const' IDENTIFIER '=' INT
-  | 'var' IDENTIFIER
+declaration: 'num' IDENTIFIER '=' INT_VAL | 'bool' IDENTIFIER '=' bool_expr
+  | data_types IDENTIFIER
   ;
 
-
-
-
-c_multipleCommand: c1 ';' c_multipleCommand
-                 | c1
+command_list: command ';' command_list
+                 | command
                  ;
-c1: INT ':=' expr
-  | 'if' bool 'then' c_multipleCommand 'else' c_multipleCommand 'endif'
-  | 'while' bool 'do' c_multipleCommand 'endwhile'
-  | k
+
+command: INT_VAL ':=' expr
+  | 'if' bool_expr 'then' command_list 'else' command_list 'endif'
+  | 'while' bool_expr 'do' command_list 'endwhile'
+  | program_full
   ;
 
 
 
-bool: 'true'
+bool_expr: 'true'
        | 'false'
        | expr '=' expr
-       | 'not' bool
+       | 'not' bool_expr
        ;
 
+data_types: 'num' | 'bool';
 
 
 expr: term '+' expr
@@ -52,7 +43,7 @@ term: factor '*' term
     ;
 
 factor: IDENTIFIER
-        | INT
+        | INT_VAL
         ;
 
 
@@ -63,4 +54,4 @@ IDENTIFIER: [a-z]+ ;
 
 
 
-INT: [0-9]+ ;
+INT_VAL: [0-9]+ ;
