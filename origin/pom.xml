@@ -27,8 +27,8 @@
 		<plugins>
 			<plugin>
 				<groupId>org.antlr</groupId>
-				<artifactId>antlr3-maven-plugin</artifactId>
-				<version>3.3</version>
+				<artifactId>antlr4-maven-plugin</artifactId>
+				<version>4.3</version>
 				<executions>
 					<execution>
 						<id>run antlr</id>
