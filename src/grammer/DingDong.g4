@@ -1,45 +1,42 @@
-grammar experiment;
-
-BEGIN: 'begin';
-SEMICOLON: ';' ;
-END: 'end' ;
-DOT: '.' ;
-CONST: 'const' ;
-VAR: 'var' ;
-
-
-program: k; 
-
-k: BEGIN d_multipleDeclaration SEMICOLON c_multipleCommand END DOT ;
+grammar DingDong;
 
 
 
 
-d_multipleDeclaration: d1 SEMICOLON d_multipleDeclaration
+
+
+program: k ; 
+
+k: 'begin' d_multipleDeclaration ';' c_multipleCommand 'end' '.' ;
+
+
+
+
+d_multipleDeclaration: d1 ';' d_multipleDeclaration
                      | d1
                      ;
-d1: CONST IDENTIFIER '=' INT
-  | VAR IDENTIFIER
+d1: 'const' IDENTIFIER '=' INT
+  | 'var' IDENTIFIER
   ;
 
 
 
 
-c_multipleCommand: c1 SEMICOLON c_multipleCommand
+c_multipleCommand: c1 ';' c_multipleCommand
                  | c1
                  ;
 c1: INT ':=' expr
-  | 'if' BOOLEANI 'then' c_multipleCommand 'else' c_multipleCommand 'endif'
-  | 'while' BOOLEANI 'do' c_multipleCommand 'endwhile'
+  | 'if' booleani 'then' c_multipleCommand 'else' c_multipleCommand 'endif'
+  | 'while' booleani 'do' c_multipleCommand 'endwhile'
   | k
   ;
 
 
 
-BOOLEANI: 'true'
+booleani: 'true'
        | 'false'
        | expr '=' expr
-       | 'not' BOOLEANI
+       | 'not' booleani
        ;
 
 
