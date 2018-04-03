@@ -49,5 +49,3 @@ Thumbs.db
 .tomcatplugin
 .settings/**
 /target/
-
-.idea/
