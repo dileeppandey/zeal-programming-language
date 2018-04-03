@@ -13,6 +13,10 @@ declaration_list: declaration ';' declaration_list
   	| data_types IDENTIFIER
   	;
 
+initialization_int: IDENTIFIER '=' INT_VAL | IDENTIFIER '=' initialization_int;
+
+initialization_bool: IDENTIFIER '=' bool_expr | IDENTIFIER '=' initialization_bool;
+
 command_list: command ';' command_list
                  | command
                  ;
@@ -29,12 +33,6 @@ bool_expr: 'true'
        | 'not' bool_expr
        ;
 
-data_types: 'num' | 'bool';
-
-initialization_int: IDENTIFIER '=' INT_VAL | IDENTIFIER '=' initialization_int;
-
-initialization_bool: IDENTIFIER '=' bool_expr | IDENTIFIER '=' initialization_bool;
-
 expr: term '+' expr
     | term '-' expr
     | term
@@ -49,6 +47,16 @@ factor: IDENTIFIER
         | INT_VAL
         ;
 
-IDENTIFIER: [a-z]+ ;
+function: return_types IDENTIFIER '(' params ')' '{' command_list return_stmt '}';
+
+params: data_types IDENTIFIER | data_types IDENTIFIER ',' params | '';
+
+data_types: 'num' | 'bool';
+
+return_types: data_types | 'void';
+
+return_stmt: 'return' IDENTIFIER | '';
+
+IDENTIFIER: [a-z]+[0-9]* ;
 
 INT_VAL: [0-9]+ ;
