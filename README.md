@@ -9,8 +9,6 @@
 
 ## Tools
 
-* Flex
-* Bison
 * ANTLR
 
 ## Instructions
