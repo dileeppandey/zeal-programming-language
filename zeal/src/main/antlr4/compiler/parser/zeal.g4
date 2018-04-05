@@ -1,33 +1,30 @@
 grammar zeal;
 
-program: program_full ; 
+program: program_full ;
 
-program_full: declaration_list ';' | declaration_list ';' command_list ;
+//program_full: declaration_list ';' | declaration_list ';' command_list ;
+program_full: (declarations ';' (function)* )+ (command_list)+  ;
 
-declaration_list: declaration ';' declaration_list
-                | declaration 
-                ;
+//declaration_list: declaration ';' declaration_list
+//                | declaration
+//                ;
 
- declaration: 'num' initialization_int
+ declarations: 'num' initialization_int
             | 'bool'  initialization_bool
             | data_types IDENTIFIER
             ;
 
-initialization_int: IDENTIFIER '=' INT_VAL 
+initialization_int: IDENTIFIER '=' INT_VAL
                   | IDENTIFIER '=' initialization_int ;
 
-initialization_bool: IDENTIFIER '=' bool_expr 
+initialization_bool: IDENTIFIER '=' bool_expr
                    | IDENTIFIER '=' initialization_bool ;
 
-command_list: command ';'
-            | command ';' command_list
-            | declaration_list
-            ;
+//command_list: command ;
 
-command: IDENTIFIER '=' expr
-       | 'if' '(' bool_expr ')' '{' command_list '}' 'else' '{' command_list '}'
-       | 'while' '(' bool_expr ')' '{' command_list '}'
-       | program_full
+command_list: IDENTIFIER '=' expr ';'
+       | 'if' '(' bool_expr ')' '{' command_list '}' 'else' '{' command_list '}' ';'
+       | 'while' '(' bool_expr ')' '{' command_list '}' ';'
        ;
 
 bool_expr: 'true'
