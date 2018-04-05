@@ -2,7 +2,7 @@ grammar zeal;
 
 program: program_full ; 
 
-program_full: declaration_list ';' command_list ;
+program_full: declaration_list | declaration_list ';' command_list ;
 
 declaration_list: declaration ';' declaration_list
                      | declaration
@@ -19,6 +19,7 @@ initialization_bool: IDENTIFIER '=' bool_expr | IDENTIFIER '=' initialization_bo
 
 command_list: command ';' command_list
                  | command
+                 | declaration_list
                  ;
 
 command: INT_VAL ':=' expr
@@ -45,6 +46,7 @@ term: factor '*' term
 
 factor: IDENTIFIER
         | INT_VAL
+        | '(' expr ')'
         ;
 
 function: return_types IDENTIFIER '(' params ')' '{' command_list return_stmt '}';
