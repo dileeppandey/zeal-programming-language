@@ -2,16 +2,16 @@ grammar zeal;
 
 program: program_full ; 
 
-program_full: declaration_list | declaration_list ';' command_list ;
+program_full: declaration_list ';' | declaration_list ';' command_list ;
 
 declaration_list: declaration ';' declaration_list
-                     | declaration
-                     ;
+                | declaration 
+                ;
 
  declaration: 'num' initialization_int
- 	| 'bool'  initialization_bool
-  	| data_types IDENTIFIER
-  	;
+            | 'bool'  initialization_bool
+            | data_types IDENTIFIER
+            ;
 
 initialization_int: IDENTIFIER '=' INT_VAL 
                   | IDENTIFIER '=' initialization_int ;
@@ -19,12 +19,12 @@ initialization_int: IDENTIFIER '=' INT_VAL
 initialization_bool: IDENTIFIER '=' bool_expr 
                    | IDENTIFIER '=' initialization_bool ;
 
-command_list: command ';' command_list
-            | command
+command_list: command ';'
+            | command ';' command_list
             | declaration_list
             ;
 
-command: expr ':=' INT_VAL 
+command: IDENTIFIER '=' expr
        | 'if' '(' bool_expr ')' '{' command_list '}' 'else' '{' command_list '}'
        | 'while' '(' bool_expr ')' '{' command_list '}'
        | program_full
@@ -32,8 +32,8 @@ command: expr ':=' INT_VAL
 
 bool_expr: 'true'
          | 'false'
-         | expr '=' expr
-         | 'not' bool_expr
+         | expr '==' expr
+         | '!' bool_expr
          ;
 
 expr: term '+' expr
@@ -51,15 +51,15 @@ factor: IDENTIFIER
         | '(' expr ')'
         ;
 
-function: return_types IDENTIFIER '(' params ')' '{' command_list ';' return_stmt ';' '}';
+function: return_types IDENTIFIER '(' (params)* ')' '{' command_list ';' (return_stmt)* ';' '}';
 
-params: data_types IDENTIFIER | data_types IDENTIFIER ',' params | '';
+params: data_types IDENTIFIER | data_types IDENTIFIER ',' params ;
 
 data_types: 'num' | 'bool';
 
 return_types: data_types | 'void';
 
-return_stmt: 'return' IDENTIFIER | '';
+return_stmt: 'return' IDENTIFIER ;
 
 IDENTIFIER: [a-zA-Z]+[0-9]* ;
 

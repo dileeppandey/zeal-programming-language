@@ -1,0 +1,12 @@
+num tha = 4;
+bool abc = 		true;
+if (abc==tha){
+
+abc=4+3;
+
+}
+else {
+
+abc=4+5;
+
+}
