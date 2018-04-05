@@ -61,6 +61,8 @@ return_types: data_types | 'void';
 
 return_stmt: 'return' IDENTIFIER | '';
 
-IDENTIFIER: [a-z]+[0-9]* ;
+IDENTIFIER: [a-zA-Z]+[0-9]* ;
 
 INT_VAL: [0-9]+ ;
+
+WHITESPACE: [ \t\n\r]+ -> skip ;
