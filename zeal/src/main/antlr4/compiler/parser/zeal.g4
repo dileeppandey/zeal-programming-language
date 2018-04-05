@@ -22,7 +22,7 @@ command_list: command ';' command_list
                  | declaration_list
                  ;
 
-command: INT_VAL ':=' expr
+command: expr ':=' INT_VAL 
   | 'if' '(' bool_expr ')' '{' command_list '}' 'else' '{' command_list '}'
   | 'while' '(' bool_expr ')' '{' command_list '}'
   | program_full
