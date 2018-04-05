@@ -13,26 +13,28 @@ declaration_list: declaration ';' declaration_list
   	| data_types IDENTIFIER
   	;
 
-initialization_int: IDENTIFIER '=' INT_VAL | IDENTIFIER '=' initialization_int;
+initialization_int: IDENTIFIER '=' INT_VAL 
+                  | IDENTIFIER '=' initialization_int ;
 
-initialization_bool: IDENTIFIER '=' bool_expr | IDENTIFIER '=' initialization_bool;
+initialization_bool: IDENTIFIER '=' bool_expr 
+                   | IDENTIFIER '=' initialization_bool ;
 
 command_list: command ';' command_list
-                 | command
-                 | declaration_list
-                 ;
+            | command
+            | declaration_list
+            ;
 
 command: expr ':=' INT_VAL 
-  | 'if' '(' bool_expr ')' '{' command_list '}' 'else' '{' command_list '}'
-  | 'while' '(' bool_expr ')' '{' command_list '}'
-  | program_full
-  ;
+       | 'if' '(' bool_expr ')' '{' command_list '}' 'else' '{' command_list '}'
+       | 'while' '(' bool_expr ')' '{' command_list '}'
+       | program_full
+       ;
 
 bool_expr: 'true'
-       | 'false'
-       | expr '=' expr
-       | 'not' bool_expr
-       ;
+         | 'false'
+         | expr '=' expr
+         | 'not' bool_expr
+         ;
 
 expr: term '+' expr
     | term '-' expr
@@ -49,7 +51,7 @@ factor: IDENTIFIER
         | '(' expr ')'
         ;
 
-function: return_types IDENTIFIER '(' params ')' '{' command_list return_stmt '}';
+function: return_types IDENTIFIER '(' params ')' '{' command_list ';' return_stmt ';' '}';
 
 params: data_types IDENTIFIER | data_types IDENTIFIER ',' params | '';
 
