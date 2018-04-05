@@ -66,3 +66,7 @@ IDENTIFIER: [a-zA-Z]+[0-9]* ;
 INT_VAL: [0-9]+ ;
 
 WHITESPACE: [ \t\n\r]+ -> skip ;
+
+BLOCK_COMMENT : '/*' .*? '*/' -> skip;
+
+LINE_COMMENT:   '//' ~[\r\n]* -> skip;
