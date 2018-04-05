@@ -1,1 +1,2 @@
-num 5 := 0;
+num var1 = 0;
+bool z = false;
