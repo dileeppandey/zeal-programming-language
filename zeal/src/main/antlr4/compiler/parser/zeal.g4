@@ -23,13 +23,14 @@ command_list: IDENTIFIER '=' expr ';'
 bool_expr: 'true'
          | 'false'
          | expr '==' expr
+         | expr '!=' expr
          | expr '=<' expr
          | expr '<=' expr
          | expr '=>' expr
          | expr '>=' expr
          | expr '>' expr
          | expr '<' expr
-         | '!' bool_expr
+         | '!' '(' bool_expr ')'
          ;
 
 expr: term '+' expr
