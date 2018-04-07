@@ -23,13 +23,19 @@ initialization_bool: IDENTIFIER '=' bool_expr
 //command_list: command ;
 
 command_list: IDENTIFIER '=' expr ';'
-       | 'if' '(' bool_expr ')' '{' command_list '}' 'else' '{' command_list '}' ';'
+       | 'if' '(' bool_expr ')' '{' command_list '}' ('else' '{' command_list '}')* ';'
        | 'while' '(' bool_expr ')' '{' command_list '}' ';'
        ;
 
 bool_expr: 'true'
          | 'false'
          | expr '==' expr
+         | expr '=<' expr
+         | expr '<=' expr
+         | expr '=>' expr
+         | expr '>=' expr
+         | expr '>' expr
+         | expr '<' expr
          | '!' bool_expr
          ;
 
