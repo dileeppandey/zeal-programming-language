@@ -2,12 +2,7 @@ grammar zeal;
 
 program: program_full ;
 
-//program_full: declaration_list ';' | declaration_list ';' command_list ;
-program_full: (declarations ';' (function)* )+ (command_list)+  ;
-
-//declaration_list: declaration ';' declaration_list
-//                | declaration
-//                ;
+program_full: (declarations ';' (function)* )+ (command_list)+  ;   
 
  declarations: 'num' initialization_int
             | 'bool'  initialization_bool
@@ -19,8 +14,6 @@ initialization_int: IDENTIFIER '=' INT_VAL
 
 initialization_bool: IDENTIFIER '=' bool_expr
                    | IDENTIFIER '=' initialization_bool ;
-
-//command_list: command ;
 
 command_list: IDENTIFIER '=' expr ';'
        | 'if' '(' bool_expr ')' '{' command_list '}' ('else' '{' command_list '}')* ';'
