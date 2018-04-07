@@ -1,6 +1,48 @@
 num tha = 4;
-bool abc = 		true;
+bool abc = 	true;
+
 if (abc==tha){
+
+abc=4+3;
+
+}
+else {
+
+abc=4+5;
+
+};
+
+
+if (abc<=tha){
+
+abc=4+3;
+
+} else { if (abc>=tha){
+
+abc=4+3;
+
+}
+else {
+
+abc=4+5;
+
+};
+
+};
+
+if (abc=>tha){
+
+abc=4+3;
+
+}
+else {
+
+abc=4+5;
+
+};
+
+
+if (abc=<tha){
 
 abc=4+3;
 
