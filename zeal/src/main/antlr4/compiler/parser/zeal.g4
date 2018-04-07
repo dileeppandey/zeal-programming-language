@@ -39,6 +39,7 @@ expr: term '+' expr
 
 term: factor '*' term
     | factor '/' term
+    | factor '%' term
     | factor
     ;
 
