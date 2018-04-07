@@ -60,7 +60,7 @@ factor: IDENTIFIER
 
 function: return_types IDENTIFIER '(' (params)* ')' '{' command_list ';' (return_stmt)* ';' '}';
 
-function_call: IDENTIFIER '(' (params)* ')'  
+function_call: IDENTIFIER '(' (params)* ')' ; 
 
 params: data_types IDENTIFIER | data_types IDENTIFIER ',' params | IDENTIFIER ;
 
