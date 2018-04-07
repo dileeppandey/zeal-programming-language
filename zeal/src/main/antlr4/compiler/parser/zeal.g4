@@ -22,6 +22,7 @@ initialization_bool: IDENTIFIER '=' bool_expr
 command_list: IDENTIFIER '=' expr ';'
        | 'if' '(' bool_expr ')' '{' command_list '}' ('else' '{' command_list '}')* ';'
        | 'while' '(' bool_expr ')' '{' command_list '}' ';'
+       | (data_types)? IDENTIFIER '=' function_call ';'
        | function_call ';'
        ;
 
@@ -45,7 +46,7 @@ expr: term '+' expr
     | term
     ;
 
-//
+//modulus multiplication and 
 term: factor '*' term
     | factor '/' term
     | factor '%' term
@@ -61,13 +62,15 @@ function: return_types IDENTIFIER '(' (params)* ')' '{' command_list ';' (return
 
 function_call: IDENTIFIER '(' (params)* ')'  
 
-params: data_types IDENTIFIER | data_types IDENTIFIER ',' params ;
+params: data_types IDENTIFIER | data_types IDENTIFIER ',' params | IDENTIFIER ;
 
 data_types: 'num' | 'bool';
 
 return_types: data_types | 'void';
 
-return_stmt: 'return' IDENTIFIER ;
+return_stmt: 'return' IDENTIFIER 
+           | 'return' expr
+           ;
 
 IDENTIFIER: [a-zA-Z]+[0-9]* ;
 
