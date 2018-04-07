@@ -1,9 +1,6 @@
 grammar zeal;
 //entry point for grammer
-program: program_full ;
-
-// declarations, function declarations, commands
-program_full: (declarations ';' (function)* )+ (command_list)+  ;   
+program: main_command_list ;   
 
 //num, bool initialisations and datatype declarations
 declarations: 'num' initialization_int
@@ -18,13 +15,23 @@ initialization_int: IDENTIFIER '=' INT_VAL
 initialization_bool: IDENTIFIER '=' bool_expr
                    | IDENTIFIER '=' initialization_bool ;
 
+main_command_list: (function)* command_list ;
+
+
+command_list: command 
+            | command command_list ;
+
+function_command_list: command 
+            | command command_list ;
 //assignment, if, while, function calling
-command_list: IDENTIFIER '=' expr ';'
+command: IDENTIFIER '=' expr ';'
+       | declarations ';'
        | 'if' '(' bool_expr ')' '{' command_list '}' ('else' '{' command_list '}')* ';'
        | 'while' '(' bool_expr ')' '{' command_list '}' ';'
        | (data_types)? IDENTIFIER '=' function_call ';'
        | function_call ';'
        ;
+
 
 //boolean evaluations
 bool_expr: 'true'
@@ -58,7 +65,7 @@ factor: IDENTIFIER
         | '(' expr ')'
         ;
 
-function: return_types IDENTIFIER '(' (params)* ')' '{' command_list ';' (return_stmt)* ';' '}';
+function: return_types IDENTIFIER '(' (params)* ')' '{' function_command_list (return_stmt ';')*  '}';
 
 function_call: IDENTIFIER '(' (params)* ')' ; 
 
