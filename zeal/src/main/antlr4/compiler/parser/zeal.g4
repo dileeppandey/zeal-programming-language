@@ -2,21 +2,7 @@ grammar zeal;
 //entry point for grammer
 program: main_command_list ;   
 
-//num, bool initialisations and datatype declarations
-declarations: 'num' initialization_int
-            | 'bool'  initialization_bool
-            | data_types IDENTIFIER
-            ;
-//num datatype initialisation with multiple identifier
-initialization_int: IDENTIFIER '=' INT_VAL
-                  | IDENTIFIER '=' initialization_int ;
-
-//bool datatype initialisation with multiple identifier
-initialization_bool: IDENTIFIER '=' bool_expr
-                   | IDENTIFIER '=' initialization_bool ;
-
-main_command_list: (function)* command_list ;
-
+main_command_list: command_list (function)* ;
 
 command_list: command 
             | command command_list ;
@@ -31,7 +17,19 @@ command: IDENTIFIER '=' expr ';'
        | (data_types)? IDENTIFIER '=' function_call ';'
        | function_call ';'
        ;
+//num, bool initialisations and datatype declarations
+declarations: 'num' initialization_int
+            | 'bool'  initialization_bool
+            | data_types IDENTIFIER
+            ;
 
+//num datatype initialisation with multiple identifier
+initialization_int: IDENTIFIER '=' INT_VAL
+                  | IDENTIFIER '=' initialization_int ;
+
+//bool datatype initialisation with multiple identifier
+initialization_bool: IDENTIFIER '=' bool_expr
+                   | IDENTIFIER '=' initialization_bool ;
 
 //boolean evaluations
 bool_expr: 'true'
