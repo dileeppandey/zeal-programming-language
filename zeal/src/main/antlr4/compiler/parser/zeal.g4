@@ -15,7 +15,7 @@ initialization_int: IDENTIFIER '=' INT_VAL
 initialization_bool: IDENTIFIER '=' bool_expr
                    | IDENTIFIER '=' initialization_bool ;
 
-main_command_list: (function)* command_list ;
+main_command_list: command_list (function)*;
 
 
 command_list: command 
