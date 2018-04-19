@@ -1,40 +1,21 @@
 Zeal Programming language Contribution
 --------------------
-
 Grammar Implementation:
-
 Branching Grammar: Dileep
-
 Recursive Grammar: Varun
-
 Functions Grammar: Tharun
-
 Expression, Construct, Terminals: Anu
-
 --------------------
-
 Design Document:
-
 Language features, grammar specifications, compiler diagram: Varun, Dileep
-
 Grammar G4 format, Sample programs, Parse trees diagram: Tharun, Anu
-
 --------------------
-
 Intermediate Code Generation:
-
 Listener Implementation: Anu, Varun
-
 Runner Implementation: Dileep, Tharun
-
 Interpreter Implmetation: All
-
 Reading Program Files into Interpreter: All
-
 --------------------
-
 Documentation: 
-
 Video: All
-
 Powerpoint Presentation : All

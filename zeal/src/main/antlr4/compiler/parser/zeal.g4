@@ -48,15 +48,15 @@ bool_expr: 'true'
          ;
 
 //precedence expression evaluation
-expr: term '+' expr
-    | term '-' expr
+expr: expr '+' term
+    | expr '-' term
     | term
     ;
 
 //modulus multiplication and 
-term: factor '*' term
-    | factor '/' term
-    | factor '%' term
+term: term '*' factor
+    | term '/' factor
+    | term '%' factor
     | factor
     ;
 
