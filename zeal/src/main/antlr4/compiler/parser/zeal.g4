@@ -16,6 +16,7 @@ command: IDENTIFIER '=' expr ';'
        | 'while' '(' bool_expr ')' '{' command_list '}' ';'
        | (data_types)? IDENTIFIER '=' function_call ';'
        | function_call ';'
+       | print_statement ';'
        ;
 //num, bool initialisations and datatype declarations
 declarations: 'num' initialization_int
@@ -42,13 +43,16 @@ bool_expr: 'true'
          | expr '>=' expr
          | expr '>' expr
          | expr '<' expr
-         | '!' '(' bool_expr ')' 
+         | '!' '(' bool_expr ')'
+         | '(' bool_expr ')' '&&' '(' bool_expr ')'
+         | '(' bool_expr ')' '||' '(' bool_expr ')'
          ;
 
 //precedence expression evaluation
 expr: expr '+' term
     | expr '-' term
     | term
+    | print_statement
     ;
 
 //modulus multiplication and 
@@ -57,6 +61,12 @@ term: term '*' factor
     | term '%' factor
     | factor
     ;
+    
+print_statement : 'print' '(' print_pattern ')';
+print_pattern :  IDENTIFIER
+	| IDENTIFIER ',' print_pattern
+	| TEXT
+	;
 
 factor: IDENTIFIER
         | INT_VAL
@@ -79,7 +89,10 @@ return_stmt: 'return' IDENTIFIER
 
 IDENTIFIER: [a-zA-Z]+[0-9]* ;
 
-INT_VAL: [0-9]+ ;
+INT_VAL: [-]? [0-9]+ ;
+
+TEXT: '"' (.*?) '"'
+	;
 
 WHITESPACE: [ \t\n\r]+ -> skip ;
 
