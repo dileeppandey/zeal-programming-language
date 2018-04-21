@@ -17,7 +17,8 @@ public class Test {
 		try {
 			input = new ANTLRFileStream(path);
 			ParseTree tree = parse(input);
-			new zealBaseVisitor<String>().visit(tree);
+			zealBaseVisitor<String> vst = new zealBaseVisitor<String>();
+			vst.visit(tree);
 			System.out.println(tree);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

@@ -10,80 +10,80 @@ command_list: command
 function_command_list: command 
             | command command_list ;
 //assignment, if, while, function calling
-command: IDENTIFIER '=' expr ';'
+command: varName=IDENTIFIER '=' expr ';'
        | declarations ';'
        | 'if' '(' bool_expr ')' '{' command_list '}' ('else' '{' command_list '}')* ';'
        | 'while' '(' bool_expr ')' '{' command_list '}' ';'
-       | (data_types)? IDENTIFIER '=' function_call ';'
+       | (data_types)? varName=IDENTIFIER '=' function_call ';'
        | function_call ';'
        | print_statement ';'
        ;
 //num, bool initialisations and datatype declarations
-declarations: 'num' initialization_int
-            | 'bool'  initialization_bool
-            | data_types IDENTIFIER
+declarations: varName='num' initialization_int
+            | varName='bool'  initialization_bool
+            | data_types varName=IDENTIFIER
             ;
 
 //num datatype initialisation with multiple identifier
-initialization_int: IDENTIFIER '=' INT_VAL
-                  | IDENTIFIER '=' initialization_int ;
+initialization_int: varName=IDENTIFIER '=' INT_VAL
+                  | varName=IDENTIFIER '=' initialization_int ;
 
 //bool datatype initialisation with multiple identifier
-initialization_bool: IDENTIFIER '=' bool_expr
-                   | IDENTIFIER '=' initialization_bool ;
+initialization_bool: varName=IDENTIFIER '=' bool_expr
+                   | varName=IDENTIFIER '=' initialization_bool ;
 
 //boolean evaluations
 bool_expr: 'true'
          | 'false'
-         | expr '==' expr
-         | expr '!=' expr
-         | expr '=<' expr
-         | expr '<=' expr
-         | expr '=>' expr
-         | expr '>=' expr
-         | expr '>' expr
-         | expr '<' expr
+         | left=expr '==' right=expr
+         | left=expr '!=' right=expr
+         | left=expr '=<' right=expr
+         | left=expr '<=' right=expr
+         | left=expr '=>' right=expr
+         | left=expr '>=' right=expr
+         | left=expr '>' right=expr
+         | left=expr '<' right=expr
          | '!' '(' bool_expr ')'
          | '(' bool_expr ')' '&&' '(' bool_expr ')'
          | '(' bool_expr ')' '||' '(' bool_expr ')'
          ;
 
 //precedence expression evaluation
-expr: expr '+' term
-    | expr '-' term
+expr: left=expr '+' right=term
+    | left=expr '-' right=term
     | term
     | print_statement
     ;
 
 //modulus multiplication and 
-term: term '*' factor
-    | term '/' factor
-    | term '%' factor
+term: left=term '*' right=factor
+    | left=term '/' right=factor
+    | left=term '%' right=factor
     | factor
     ;
     
 print_statement : 'print' '(' print_pattern ')';
-print_pattern :  IDENTIFIER
-	| IDENTIFIER ',' print_pattern
+print_pattern :  varName=IDENTIFIER
+	| varName=IDENTIFIER ',' print_pattern
 	| TEXT
 	;
 
-factor: IDENTIFIER
+factor: varName=IDENTIFIER
         | INT_VAL
         | '(' expr ')'
         ;
 
-function: return_types IDENTIFIER '(' (params)* ')' '{' function_command_list (return_stmt ';')*  '}';
+function: returnType=return_types functionName=IDENTIFIER '(' (params)* ')' '{' function_command_list (return_stmt ';')*  '}';
 
-function_call: IDENTIFIER '(' (params)* ')' ; 
+function_call: functionName=IDENTIFIER '(' (params)* ')' ; 
 
-params: data_types IDENTIFIER | data_types IDENTIFIER ',' params | IDENTIFIER ;
+params: data_types varName=IDENTIFIER | data_types varName=IDENTIFIER ',' params | varName=IDENTIFIER ;
 
 data_types: 'num' | 'bool';
 
 return_types: data_types | 'void';
 
-return_stmt: 'return' IDENTIFIER 
+return_stmt: 'return' varName=IDENTIFIER 
            | 'return' expr
            ;
 

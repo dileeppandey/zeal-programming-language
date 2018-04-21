@@ -1,3 +1,18 @@
-num var1 = 0;
-bool z = false;
-8ool z = lol;
+num fun(num x)
+{
+    num y = 5;
+    y = y - 1;
+}
+
+num y;
+
+y = fun(val);
+
+if (abc=<tha)
+{
+	abc=4+3;
+} 
+else 
+{
+	abc=4+5;
+};
