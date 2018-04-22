@@ -91,7 +91,7 @@ IDENTIFIER: [a-zA-Z]+[0-9]* ;
 
 INT_VAL: [-]? [0-9]+ ;
 
-TEXT: '"' (.*?) '"'
+TEXT: '"' (~["])* '"'
 	;
 
 WHITESPACE: [ \t\n\r]+ -> skip ;
