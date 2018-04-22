@@ -15,8 +15,7 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 	 * </p>
 	 */
 	@Override
-	public String visitMain_command_list(
-			@NotNull zealParser.Main_command_listContext ctx) {
+	public String visitAdd(@NotNull zealParser.AddContext ctx) {
 		return visitChildren(ctx);
 	}
 
@@ -29,8 +28,7 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 	 * </p>
 	 */
 	@Override
-	public String visitFunction_command_list(
-			@NotNull zealParser.Function_command_listContext ctx) {
+	public String visitCommand_list(@NotNull zealParser.Command_listContext ctx) {
 		return visitChildren(ctx);
 	}
 
@@ -43,8 +41,8 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 	 * </p>
 	 */
 	@Override
-	public String visitCommand_list(
-			@NotNull zealParser.Command_listContext ctx) {
+	public String visitTermExpression(
+			@NotNull zealParser.TermExpressionContext ctx) {
 		return visitChildren(ctx);
 	}
 
@@ -57,36 +55,7 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 	 * </p>
 	 */
 	@Override
-	public String visitFunction_call(
-			@NotNull zealParser.Function_callContext ctx) {
-		return visitChildren(ctx);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>
-	 * The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.
-	 * </p>
-	 */
-	@Override
-	public String visitReturn_types(
-			@NotNull zealParser.Return_typesContext ctx) {
-		return visitChildren(ctx);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>
-	 * The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.
-	 * </p>
-	 */
-	@Override
-	public String visitInitialization_int(
-			@NotNull zealParser.Initialization_intContext ctx) {
+	public String visitFunction_call(@NotNull zealParser.Function_callContext ctx) {
 		return visitChildren(ctx);
 	}
 
@@ -126,8 +95,191 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 	 * </p>
 	 */
 	@Override
-	public String visitPrint_pattern(
-			@NotNull zealParser.Print_patternContext ctx) {
+	public String visitPrintText(@NotNull zealParser.PrintTextContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>
+	 * The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.
+	 * </p>
+	 */
+	@Override
+	public String visitWhileBlock(@NotNull zealParser.WhileBlockContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>
+	 * The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.
+	 * </p>
+	 */
+	@Override
+	public String visitDivide(@NotNull zealParser.DivideContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>
+	 * The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.
+	 * </p>
+	 */
+	@Override
+	public String visitIfElseBlock(@NotNull zealParser.IfElseBlockContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>
+	 * The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.
+	 * </p>
+	 */
+	@Override
+	public String visitLessThan(@NotNull zealParser.LessThanContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>
+	 * The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.
+	 * </p>
+	 */
+	@Override
+	public String visitGreaterThan(@NotNull zealParser.GreaterThanContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>
+	 * The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.
+	 * </p>
+	 */
+	@Override
+	public String visitMultiply(@NotNull zealParser.MultiplyContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>
+	 * The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.
+	 * </p>
+	 */
+	@Override
+	public String visitFunction(@NotNull zealParser.FunctionContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>
+	 * The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.
+	 * </p>
+	 */
+	@Override
+	public String visitEquality(@NotNull zealParser.EqualityContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>
+	 * The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.
+	 * </p>
+	 */
+	@Override
+	public String visitVarAssign(@NotNull zealParser.VarAssignContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>
+	 * The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.
+	 * </p>
+	 */
+	@Override
+	public String visitSub(@NotNull zealParser.SubContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>
+	 * The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.
+	 * </p>
+	 */
+	@Override
+	public String visitNotEqual(@NotNull zealParser.NotEqualContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>
+	 * The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.
+	 * </p>
+	 */
+	@Override
+	public String visitAndOperator(@NotNull zealParser.AndOperatorContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>
+	 * The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.
+	 * </p>
+	 */
+	@Override
+	public String visitInitialization_int(
+			@NotNull zealParser.Initialization_intContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>
+	 * The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.
+	 * </p>
+	 */
+	@Override
+	public String visitEqualGreaterThan(
+			@NotNull zealParser.EqualGreaterThanContext ctx) {
 		return visitChildren(ctx);
 	}
 
@@ -153,7 +305,8 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 	 * </p>
 	 */
 	@Override
-	public String visitCommand(@NotNull zealParser.CommandContext ctx) {
+	public String visitTrueExpression(
+			@NotNull zealParser.TrueExpressionContext ctx) {
 		return visitChildren(ctx);
 	}
 
@@ -166,8 +319,8 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 	 * </p>
 	 */
 	@Override
-	public String visitDeclarations(
-			@NotNull zealParser.DeclarationsContext ctx) {
+	public String visitFactorExpression(
+			@NotNull zealParser.FactorExpressionContext ctx) {
 		return visitChildren(ctx);
 	}
 
@@ -194,7 +347,8 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 	 * </p>
 	 */
 	@Override
-	public String visitBool_expr(@NotNull zealParser.Bool_exprContext ctx) {
+	public String visitReturnTypeVoid(
+			@NotNull zealParser.ReturnTypeVoidContext ctx) {
 		return visitChildren(ctx);
 	}
 
@@ -207,7 +361,8 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 	 * </p>
 	 */
 	@Override
-	public String visitFunction(@NotNull zealParser.FunctionContext ctx) {
+	public String visitMain_command_list(
+			@NotNull zealParser.Main_command_listContext ctx) {
 		return visitChildren(ctx);
 	}
 
@@ -220,7 +375,8 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 	 * </p>
 	 */
 	@Override
-	public String visitExpr(@NotNull zealParser.ExprContext ctx) {
+	public String visitGreaterThanEqual(
+			@NotNull zealParser.GreaterThanEqualContext ctx) {
 		return visitChildren(ctx);
 	}
 
@@ -233,7 +389,116 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 	 * </p>
 	 */
 	@Override
-	public String visitTerm(@NotNull zealParser.TermContext ctx) {
+	public String visitLessThanEqual(@NotNull zealParser.LessThanEqualContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>
+	 * The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.
+	 * </p>
+	 */
+	@Override
+	public String visitReturnVariable(
+			@NotNull zealParser.ReturnVariableContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>
+	 * The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.
+	 * </p>
+	 */
+	@Override
+	public String visitReturnExpression(
+			@NotNull zealParser.ReturnExpressionContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>
+	 * The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.
+	 * </p>
+	 */
+	@Override
+	public String visitPrintExpression(
+			@NotNull zealParser.PrintExpressionContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>
+	 * The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.
+	 * </p>
+	 */
+	@Override
+	public String visitNumericalDataType(
+			@NotNull zealParser.NumericalDataTypeContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>
+	 * The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.
+	 * </p>
+	 */
+	@Override
+	public String visitEqualLessThan(@NotNull zealParser.EqualLessThanContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>
+	 * The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.
+	 * </p>
+	 */
+	@Override
+	public String visitPrintSymbol(@NotNull zealParser.PrintSymbolContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>
+	 * The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.
+	 * </p>
+	 */
+	@Override
+	public String visitPrintRecursive(
+			@NotNull zealParser.PrintRecursiveContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>
+	 * The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.
+	 * </p>
+	 */
+	@Override
+	public String visitFunctionCall(@NotNull zealParser.FunctionCallContext ctx) {
 		return visitChildren(ctx);
 	}
 
@@ -259,7 +524,8 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 	 * </p>
 	 */
 	@Override
-	public String visitData_types(@NotNull zealParser.Data_typesContext ctx) {
+	public String visitBooleanDataType(
+			@NotNull zealParser.BooleanDataTypeContext ctx) {
 		return visitChildren(ctx);
 	}
 
@@ -272,7 +538,129 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 	 * </p>
 	 */
 	@Override
-	public String visitReturn_stmt(@NotNull zealParser.Return_stmtContext ctx) {
+	public String visitFalseExpression(
+			@NotNull zealParser.FalseExpressionContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>
+	 * The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.
+	 * </p>
+	 */
+	@Override
+	public String visitOrOperator(@NotNull zealParser.OrOperatorContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>
+	 * The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.
+	 * </p>
+	 */
+	@Override
+	public String visitFunction_command_list(
+			@NotNull zealParser.Function_command_listContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>
+	 * The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.
+	 * </p>
+	 */
+	@Override
+	public String visitPrintFunctionCall(
+			@NotNull zealParser.PrintFunctionCallContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>
+	 * The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.
+	 * </p>
+	 */
+	@Override
+	public String visitMod(@NotNull zealParser.ModContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>
+	 * The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.
+	 * </p>
+	 */
+	@Override
+	public String visitDeclarations(@NotNull zealParser.DeclarationsContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>
+	 * The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.
+	 * </p>
+	 */
+	@Override
+	public String visitVarInit(@NotNull zealParser.VarInitContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>
+	 * The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.
+	 * </p>
+	 */
+	@Override
+	public String visitArguments(@NotNull zealParser.ArgumentsContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>
+	 * The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.
+	 * </p>
+	 */
+	@Override
+	public String visitFunctionToVarAssign(
+			@NotNull zealParser.FunctionToVarAssignContext ctx) {
+		return visitChildren(ctx);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>
+	 * The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.
+	 * </p>
+	 */
+	@Override
+	public String visitReturnTypeDataType(
+			@NotNull zealParser.ReturnTypeDataTypeContext ctx) {
 		return visitChildren(ctx);
 	}
 }

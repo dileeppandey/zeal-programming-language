@@ -10,13 +10,13 @@ command_list: command
 function_command_list: command 
             | command command_list ;
 //assignment, if, while, function calling
-command: varName=IDENTIFIER '=' expr ';'
-       | declarations ';'
-       | 'if' '(' bool_expr ')' '{' command_list '}' ('else' '{' command_list '}')* ';'
-       | 'while' '(' bool_expr ')' '{' command_list '}' ';'
-       | (data_types)? varName=IDENTIFIER '=' function_call ';'
-       | function_call ';'
-       | print_statement ';'
+command: varName=IDENTIFIER '=' expr ';' #VarAssign
+       | declarations ';'  #VarInit
+       | 'if' '(' bool_expr ')' '{' command_list '}' ('else' '{' command_list '}')* ';' #IfElseBlock
+       | 'while' '(' bool_expr ')' '{' command_list '}' ';' #WhileBlock
+       | (data_types)? varName=IDENTIFIER '=' function_call ';' #FunctionToVarAssign
+       | function_call ';' #FunctionCall
+       | print_statement ';' #PrintExpression
        ;
 //num, bool initialisations and datatype declarations
 declarations: varName='num' initialization_int
@@ -33,39 +33,39 @@ initialization_bool: varName=IDENTIFIER '=' bool_expr
                    | varName=IDENTIFIER '=' initialization_bool ;
 
 //boolean evaluations
-bool_expr: 'true'
-         | 'false'
-         | left=expr '==' right=expr
-         | left=expr '!=' right=expr
-         | left=expr '=<' right=expr
-         | left=expr '<=' right=expr
-         | left=expr '=>' right=expr
-         | left=expr '>=' right=expr
-         | left=expr '>' right=expr
-         | left=expr '<' right=expr
-         | '!' '(' bool_expr ')'
-         | '(' bool_expr ')' '&&' '(' bool_expr ')'
-         | '(' bool_expr ')' '||' '(' bool_expr ')'
+bool_expr: 'true' #TrueExpression
+         | 'false' #FalseExpression
+         | left=expr '==' right=expr #Equality
+         | left=expr '!=' right=expr #NotEqual
+         | left=expr '=<' right=expr #EqualLessThan
+         | left=expr '<=' right=expr #LessThanEqual
+         | left=expr '=>' right=expr #EqualGreaterThan
+         | left=expr '>=' right=expr #GreaterThanEqual
+         | left=expr '>' right=expr #GreaterThan
+         | left=expr '<' right=expr #LessThan
+         | '!' '(' bool_expr ')' #NotEqual
+         | '(' bool_expr ')' '&&' '(' bool_expr ')' #AndOperator
+         | '(' bool_expr ')' '||' '(' bool_expr ')' #OrOperator
          ;
 
 //precedence expression evaluation
-expr: left=expr '+' right=term
-    | left=expr '-' right=term
-    | term
+expr: left=expr '+' right=term #Add
+    | left=expr '-' right=term #Sub
+    | term #TermExpression
     ;
 
 //modulus multiplication and 
-term: left=term '*' right=factor
-    | left=term '/' right=factor
-    | left=term '%' right=factor
-    | factor
+term: left=term '*' right=factor #Multiply
+    | left=term '/' right=factor #Divide
+    | left=term '%' right=factor #Mod
+    | factor #FactorExpression
     ;
     
 print_statement : 'print' '(' print_pattern ')';
-print_pattern :  varName=IDENTIFIER
-	| varName=IDENTIFIER ',' print_pattern
-	| TEXT
-	| function_call
+print_pattern :  varName=IDENTIFIER #PrintSymbol
+	| varName=IDENTIFIER ',' print_pattern #PrintRecursive
+	| TEXT #PrintText
+	| function_call #PrintFunctionCall
 	;
 
 factor: varName=IDENTIFIER
@@ -79,12 +79,14 @@ arguments: data_types varName=IDENTIFIER | data_types varName=IDENTIFIER ',' arg
 function_call: functionName=IDENTIFIER '(' (params)* ')' ; 
 params: varName=IDENTIFIER | varName=IDENTIFIER ',' params;
 
-data_types: 'num' | 'bool';
+data_types: 'num' #NumericalDataType
+            | 'bool' #BooleanDataType;
 
-return_types: data_types | 'void';
+return_types: data_types #ReturnTypeDataType
+              | 'void' #ReturnTypeVoid;
 
-return_stmt: 'return' varName=IDENTIFIER 
-           | 'return' expr
+return_stmt: 'return' varName=IDENTIFIER #ReturnVariable
+           | 'return' expr #ReturnExpression
            ;
 
 IDENTIFIER: [a-zA-Z]+[0-9]* ;
