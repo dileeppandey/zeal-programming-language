@@ -52,7 +52,6 @@ bool_expr: 'true'
 expr: left=expr '+' right=term
     | left=expr '-' right=term
     | term
-    | print_statement
     ;
 
 //modulus multiplication and 
