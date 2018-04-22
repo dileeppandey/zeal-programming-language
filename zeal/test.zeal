@@ -1,4 +1,4 @@
-num fun(num x)
+function num fun(num x)
 {
     num y = 5;
     y = y - 1;
@@ -16,3 +16,17 @@ else
 {
 	abc=4+5;
 };
+
+num x = -5;
+
+print("Hi");
+
+print(x, y, z);
+
+function num calc(num x, num y) {
+	print(x, y);
+}
+
+num y = calc(x, x);
+
+print(calc(x,x));

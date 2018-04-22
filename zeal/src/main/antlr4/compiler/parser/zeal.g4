@@ -2,7 +2,7 @@ grammar zeal;
 //entry point for grammer
 program: main_command_list ;   
 
-main_command_list: command_list (function)* ;
+main_command_list: command_list | function | command_list main_command_list | function main_command_list;
 
 command_list: command 
             | command command_list ;
@@ -66,6 +66,7 @@ print_statement : 'print' '(' print_pattern ')';
 print_pattern :  varName=IDENTIFIER
 	| varName=IDENTIFIER ',' print_pattern
 	| TEXT
+	| function_call
 	;
 
 factor: varName=IDENTIFIER
@@ -73,11 +74,11 @@ factor: varName=IDENTIFIER
         | '(' expr ')'
         ;
 
-function: returnType=return_types functionName=IDENTIFIER '(' (params)* ')' '{' function_command_list (return_stmt ';')*  '}';
+function: 'function' returnType=return_types functionName=IDENTIFIER  '(' (arguments)* ')' '{' function_command_list (return_stmt ';')*  '}';
+arguments: data_types varName=IDENTIFIER | data_types varName=IDENTIFIER ',' arguments;
 
 function_call: functionName=IDENTIFIER '(' (params)* ')' ; 
-
-params: data_types varName=IDENTIFIER | data_types varName=IDENTIFIER ',' params | varName=IDENTIFIER ;
+params: varName=IDENTIFIER | varName=IDENTIFIER ',' params;
 
 data_types: 'num' | 'bool';
 
