@@ -94,13 +94,12 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 				mainCode += instructions;
 			}
 		}
-		return mainCode;
+		return mainCode + "label_" + blockCount + "_else:\n";
 	}
 
 	@Override
 	public String visitLabel_command_list_else(Label_command_list_elseContext ctx) {
-		String labelName = "label_" + blockCount + "_else";
-		String mainCode = labelName + "\n";
+		String mainCode = "";
 		for (int i = 0; i < ctx.getChildCount(); i++) {
 			/*
 			 * if(i==0) { mainCode+=labelName + ":\n"; }

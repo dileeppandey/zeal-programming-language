@@ -22,6 +22,11 @@ if( n>=3 ) {
 };
 
 
+if(z!=2) {
+	print("Z is not equal to 2");
+};
+
+
 while( n<4 ) {
 	n = n+2;
 };
