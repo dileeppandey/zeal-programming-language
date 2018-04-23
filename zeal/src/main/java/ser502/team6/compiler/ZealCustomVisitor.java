@@ -1,5 +1,8 @@
 package ser502.team6.compiler;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.antlr.v4.runtime.misc.NotNull;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.RuleNode;
@@ -57,7 +60,13 @@ import compiler.parser.zealParser.VariableAssignContext;
 import compiler.parser.zealParser.WhileBlockContext;
 
 public class ZealCustomVisitor extends zealBaseVisitor<String> {
+	
 
+	/*
+	 * This map will have key of the block name and value as variable name
+	 */
+	Map<String, String> scopeVariableMap = new HashMap<String, String>();
+	
 	@Override
 	public String visitDeclarations(DeclarationsContext ctx) {
 		String varName = ctx.varName.getText();
