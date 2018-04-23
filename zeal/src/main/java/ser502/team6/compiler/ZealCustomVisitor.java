@@ -60,13 +60,12 @@ import compiler.parser.zealParser.VariableAssignContext;
 import compiler.parser.zealParser.WhileBlockContext;
 
 public class ZealCustomVisitor extends zealBaseVisitor<String> {
-	
 
 	/*
 	 * This map will have key of the block name and value as variable name
 	 */
 	Map<String, String> scopeVariableMap = new HashMap<String, String>();
-	
+
 	@Override
 	public String visitDeclarations(DeclarationsContext ctx) {
 		String varName = ctx.varName.getText();
@@ -86,8 +85,7 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 		if (ctx.INT_VAL() == null) {
 			return "num " + varName + " = " + visitChildren(ctx);
 		} else {
-			String stmt = "num " + varName + "\nMOV " + varName + ", "
-					+ ctx.INT_VAL().getText();
+			String stmt = "num " + varName + "\nLOAD " + ctx.INT_VAL().getText() + "\nSTORE " + varName;
 			return visitChildren(ctx) + stmt;
 		}
 	}
@@ -100,10 +98,15 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 		if (ctx.bool_expr() == null) {
 			return "bool " + varName + " = " + visitChildren(ctx);
 		} else {
-			String stmt = "bool " + varName + "\nMOV " + varName + ", "
-					+ ctx.bool_expr().getText();
+			String stmt = "bool " + varName + "\nLOAD " + ctx.bool_expr().getText() + "\nSTORE " + varName;
 			return visitChildren(ctx) + stmt;
 		}
+	}
+
+	@Override
+	public String visitAdd(AddContext ctx) {
+		String stmt = "ADD " + ctx.left.getText() + " " + ctx.right.getText() + "\n";
+		return stmt;
 	}
 
 	@Override
@@ -119,23 +122,18 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 	@Override
 	public String visitValueAssign(ValueAssignContext ctx) {
 		String value = ctx.value.getText();
-		return value;
+		return "LOAD " + value;
 	}
 
 	@Override
 	public String visitVarAssign(VarAssignContext ctx) {
 		String variableName = ctx.varName.getText();
-		return "MOV " + variableName + ", " + visitChildren(ctx);
+		return visitChildren(ctx) + "STORE " + variableName + "\n";
 	}
 
 	@Override
 	public String visitVariableAssign(VariableAssignContext ctx) {
-		return visitChildren(ctx);
-	}
-
-	@Override
-	public String visitAdd(AddContext ctx) {
-		return visitChildren(ctx) + "ADD\n";
+		return visitChildren(ctx) + "LOAD " + ctx.varName.getText();
 	}
 
 	@Override
@@ -148,14 +146,6 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 		return visitChildren(ctx);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>
-	 * The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.
-	 * </p>
-	 */
 	@Override
 	public String visitProgram(ProgramContext ctx) {
 		String mainCode = "";
@@ -169,106 +159,44 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 		return mainCode + "\nEND";
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>
-	 * The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.
-	 * </p>
-	 */
 	@Override
 	public String visitPrintText(PrintTextContext ctx) {
 		String text = ctx.TEXT().getText();
 		return visitChildren(ctx) + "WRITE " + text + "\n";
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>
-	 * The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.
-	 * </p>
-	 */
 	@Override
 	public String visitWhileBlock(WhileBlockContext ctx) {
 		return visitChildren(ctx);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>
-	 * The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.
-	 * </p>
-	 */
 	@Override
 	public String visitDivide(DivideContext ctx) {
-		return visitChildren(ctx) + "DIVIDE\n";
+		String stmt = "DIV " + ctx.left.getText() + " " + ctx.right.getText() + "\n";
+		return stmt;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>
-	 * The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.
-	 * </p>
-	 */
 	@Override
 	public String visitIfElseBlock(IfElseBlockContext ctx) {
 		return visitChildren(ctx);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>
-	 * The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.
-	 * </p>
-	 */
 	@Override
 	public String visitLessThan(LessThanContext ctx) {
 		return visitChildren(ctx);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>
-	 * The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.
-	 * </p>
-	 */
 	@Override
 	public String visitGreaterThan(GreaterThanContext ctx) {
 		return visitChildren(ctx) + "GE\n";
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>
-	 * The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.
-	 * </p>
-	 */
 	@Override
 	public String visitMultiply(MultiplyContext ctx) {
-		return visitChildren(ctx) + "MULT\n";
+		String stmt = "PROD " + ctx.left.getText() + " " + ctx.right.getText() + "\n";
+		return stmt;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>
-	 * The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.
-	 * </p>
-	 */
 	@Override
 	public String visitFunction(FunctionContext ctx) {
 
@@ -279,222 +207,87 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 		return visitChildren(ctx) + funcName;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>
-	 * The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.
-	 * </p>
-	 */
 	@Override
 	public String visitEquality(EqualityContext ctx) {
 		return visitChildren(ctx);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>
-	 * The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.
-	 * </p>
-	 */
 	@Override
 	public String visitSub(SubContext ctx) {
-		return visitChildren(ctx) + "SUB\n";
+		String stmt = "\nSUB " + ctx.left.getText() + " " + ctx.right.getText() + "\n";
+		return stmt;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>
-	 * The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.
-	 * </p>
-	 */
 	@Override
 	public String visitNotEqual(NotEqualContext ctx) {
 		return visitChildren(ctx);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>
-	 * The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.
-	 * </p>
-	 */
 	@Override
 	public String visitAndOperator(AndOperatorContext ctx) {
 		return visitChildren(ctx);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>
-	 * The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.
-	 * </p>
-	 */
 	@Override
 	public String visitEqualGreaterThan(EqualGreaterThanContext ctx) {
 		return visitChildren(ctx);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>
-	 * The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.
-	 * </p>
-	 */
 	@Override
 	public String visitParams(ParamsContext ctx) {
 		return visitChildren(ctx);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>
-	 * The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.
-	 * </p>
-	 */
 	@Override
 	public String visitTrueExpression(TrueExpressionContext ctx) {
 		return visitChildren(ctx);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>
-	 * The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.
-	 * </p>
-	 */
 	@Override
 	public String visitFactorExpression(FactorExpressionContext ctx) {
 		return visitChildren(ctx) + "\n";
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>
-	 * The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.
-	 * </p>
-	 */
 	@Override
 	public String visitPrint_statement(Print_statementContext ctx) {
 		return visitChildren(ctx);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>
-	 * The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.
-	 * </p>
-	 */
 	@Override
 	public String visitReturnTypeVoid(ReturnTypeVoidContext ctx) {
 		return visitChildren(ctx);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>
-	 * The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.
-	 * </p>
-	 */
 	@Override
 	public String visitGreaterThanEqual(GreaterThanEqualContext ctx) {
 		return visitChildren(ctx);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>
-	 * The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.
-	 * </p>
-	 */
 	@Override
 	public String visitLessThanEqual(LessThanEqualContext ctx) {
 		return visitChildren(ctx);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>
-	 * The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.
-	 * </p>
-	 */
 	@Override
 	public String visitReturnVariable(ReturnVariableContext ctx) {
 		return visitChildren(ctx);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>
-	 * The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.
-	 * </p>
-	 */
 	@Override
 	public String visitReturnExpression(ReturnExpressionContext ctx) {
 		return visitChildren(ctx);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>
-	 * The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.
-	 * </p>
-	 */
 	@Override
 	public String visitPrintExpression(PrintExpressionContext ctx) {
 		return visitChildren(ctx);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>
-	 * The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.
-	 * </p>
-	 */
 	@Override
 	public String visitNumericalDataType(NumericalDataTypeContext ctx) {
 		return visitChildren(ctx);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>
-	 * The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.
-	 * </p>
-	 */
 	@Override
 	public String visitEqualLessThan(EqualLessThanContext ctx) {
 		return visitChildren(ctx);
@@ -591,40 +384,17 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 		return visitChildren(ctx);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>
-	 * The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.
-	 * </p>
-	 */
 	@Override
 	public String visitPrintFunctionCall(PrintFunctionCallContext ctx) {
 		return visitChildren(ctx);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>
-	 * The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.
-	 * </p>
-	 */
 	@Override
 	public String visitMod(ModContext ctx) {
-		return visitChildren(ctx);
+		String stmt = "MOD " + ctx.left.getText() + " " + ctx.right.getText() + "\n";
+		return stmt;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>
-	 * The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.
-	 * </p>
-	 */
 	@Override
 	public String visitArguments(ArgumentsContext ctx) {
 		return visitChildren(ctx);

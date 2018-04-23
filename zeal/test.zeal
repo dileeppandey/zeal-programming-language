@@ -3,3 +3,12 @@ z = 2;
 bool y = true;
 print("hello");
 t=3;
+z = 2 + 3;
+num v;
+v = 3/3;
+
+num m;
+m = 3*3;
+
+num n;
+n = 3%4;
