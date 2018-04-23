@@ -32,7 +32,9 @@ import compiler.parser.zealParser.GreaterThanEqualContext;
 import compiler.parser.zealParser.IfElseBlockContext;
 import compiler.parser.zealParser.Initialization_boolContext;
 import compiler.parser.zealParser.Initialization_intContext;
-import compiler.parser.zealParser.Label_command_listContext;
+import compiler.parser.zealParser.Label_command_list_elseContext;
+import compiler.parser.zealParser.Label_command_list_ifContext;
+import compiler.parser.zealParser.Label_command_list_whileContext;
 import compiler.parser.zealParser.LessThanContext;
 import compiler.parser.zealParser.LessThanEqualContext;
 import compiler.parser.zealParser.Main_command_listContext;
@@ -78,21 +80,56 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 	Map<String, String> scopeVariableMap = new HashMap<String, String>();
 
 	@Override
-	public String visitLabel_command_list(Label_command_listContext ctx) {
+	public String visitLabel_command_list_if(Label_command_list_ifContext ctx) {
 		blockCount++;
-		String labelName = "label_"+blockCount;
-		String mainCode = labelName + "\n";
+		// String labelName = "label_"+blockCount + "_if";
+		String mainCode = "label_" + blockCount + "_else\n";
 		for (int i = 0; i < ctx.getChildCount(); i++) {
-			if(i==0) {
-				mainCode+=labelName + ":\n";
-			}
+			/*
+			 * if(i==0) { mainCode+=labelName + ":\n"; }
+			 */
 			ParseTree child = ctx.getChild(i);
 			String instructions = visit(child);
 			if (child instanceof CommandContext) {
 				mainCode += instructions;
 			}
 		}
-		return mainCode + labelName +"_end:";
+		return mainCode;
+	}
+
+	@Override
+	public String visitLabel_command_list_else(Label_command_list_elseContext ctx) {
+		String labelName = "label_" + blockCount + "_else";
+		String mainCode = labelName + "\n";
+		for (int i = 0; i < ctx.getChildCount(); i++) {
+			/*
+			 * if(i==0) { mainCode+=labelName + ":\n"; }
+			 */
+			ParseTree child = ctx.getChild(i);
+			String instructions = visit(child);
+			if (child instanceof CommandContext) {
+				mainCode += instructions;
+			}
+		}
+		return mainCode;
+	}
+
+	@Override
+	public String visitLabel_command_list_while(Label_command_list_whileContext ctx) {
+		String labelName = "label_" + blockCount + "_while";
+		String mainCode = "label_" + blockCount + "_while_end" + "\n";
+		for (int i = 0; i < ctx.getChildCount(); i++) {
+			/*if (i == 0) {
+				mainCode += labelName + ":\n";
+			}*/
+			ParseTree child = ctx.getChild(i);
+			String instructions = visit(child);
+			if (child instanceof CommandContext) {
+				mainCode += instructions;
+			}
+		}
+		mainCode += "goto " + labelName + "\n";
+		return mainCode + labelName + "_end:\n";
 	}
 
 	@Override
@@ -196,7 +233,9 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 
 	@Override
 	public String visitWhileBlock(WhileBlockContext ctx) {
-		return visitChildren(ctx);
+		blockCount++;
+		String labelName = "label_" + blockCount + "_while";
+		return labelName + ":\n" + visitChildren(ctx);
 	}
 
 	@Override
@@ -212,12 +251,14 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 
 	@Override
 	public String visitLessThan(LessThanContext ctx) {
-		return visitChildren(ctx);
+		String stmt = "BGE " + ctx.left.getText() + ", " + ctx.right.getText() + ", ";
+		return visitChildren(ctx) + stmt;
 	}
 
 	@Override
 	public String visitGreaterThan(GreaterThanContext ctx) {
-		return visitChildren(ctx) + "GE\n";
+		String stmt = "BLE " + ctx.left.getText() + ", " + ctx.right.getText() + ", ";
+		return visitChildren(ctx) + stmt;
 	}
 
 	@Override
@@ -238,7 +279,7 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 
 	@Override
 	public String visitEquality(EqualityContext ctx) {
-		String stmt = "\nbeq " + ctx.left.getText() + " " + ctx.right.getText() + " ";
+		String stmt = "BNE " + ctx.left.getText() + ", " + ctx.right.getText() + ", ";
 		return visitChildren(ctx) + stmt;
 	}
 
@@ -250,7 +291,8 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 
 	@Override
 	public String visitNotEqual(NotEqualContext ctx) {
-		return visitChildren(ctx);
+		String stmt = "BEQ " + ctx.left.getText() + ", " + ctx.right.getText() + ", ";
+		return visitChildren(ctx) + stmt;
 	}
 
 	@Override
@@ -290,12 +332,14 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 
 	@Override
 	public String visitGreaterThanEqual(GreaterThanEqualContext ctx) {
-		return visitChildren(ctx);
+		String stmt = "BLT " + ctx.left.getText() + ", " + ctx.right.getText() + ", ";
+		return visitChildren(ctx) + stmt;
 	}
 
 	@Override
 	public String visitLessThanEqual(LessThanEqualContext ctx) {
-		return visitChildren(ctx);
+		String stmt = "BGT " + ctx.left.getText() + ", " + ctx.right.getText() + ", ";
+		return visitChildren(ctx) + stmt;
 	}
 
 	@Override
@@ -323,92 +367,36 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 		return visitChildren(ctx);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>
-	 * The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.
-	 * </p>
-	 */
 	@Override
 	public String visitPrintSymbol(PrintSymbolContext ctx) {
 		return visitChildren(ctx);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>
-	 * The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.
-	 * </p>
-	 */
 	@Override
 	public String visitPrintRecursive(PrintRecursiveContext ctx) {
 		return visitChildren(ctx);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>
-	 * The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.
-	 * </p>
-	 */
 	@Override
 	public String visitFunctionCall(FunctionCallContext ctx) {
 		return visitChildren(ctx);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>
-	 * The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.
-	 * </p>
-	 */
 	@Override
 	public String visitBooleanDataType(BooleanDataTypeContext ctx) {
 		return visitChildren(ctx);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>
-	 * The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.
-	 * </p>
-	 */
 	@Override
 	public String visitFalseExpression(FalseExpressionContext ctx) {
 		return visitChildren(ctx) + "false";
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>
-	 * The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.
-	 * </p>
-	 */
 	@Override
 	public String visitOrOperator(OrOperatorContext ctx) {
 		return visitChildren(ctx);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>
-	 * The default implementation returns the result of calling
-	 * {@link #visitChildren} on {@code ctx}.
-	 * </p>
-	 */
 	@Override
 	public String visitFunction_command_list(Function_command_listContext ctx) {
 		return visitChildren(ctx);
