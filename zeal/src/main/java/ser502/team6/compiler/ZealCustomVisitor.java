@@ -59,6 +59,13 @@ import compiler.parser.zealParser.VarInitContext;
 import compiler.parser.zealParser.VariableAssignContext;
 import compiler.parser.zealParser.WhileBlockContext;
 
+/**
+ * Overriding the antlr visitor class to include compilation language and
+ * generate the intermediate code
+ * 
+ * @author vsriva12
+ *
+ */
 public class ZealCustomVisitor extends zealBaseVisitor<String> {
 
 	/*
