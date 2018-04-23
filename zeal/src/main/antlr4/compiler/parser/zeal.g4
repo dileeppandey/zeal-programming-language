@@ -10,11 +10,15 @@ command_list: command
 
 function_command_list: command 
             | command command_list ;
+            
+label_command_list: (command)+;            
+            
+            
 //assignment, if, while, function calling
 command: varName=IDENTIFIER '=' expr ';' #VarAssign
        | declarations ';'  #VarInit
-       | 'if' '(' bool_expr ')' '{' command_list '}' ('else' '{' command_list '}')* ';' #IfElseBlock
-       | 'while' '(' bool_expr ')' '{' command_list '}' ';' #WhileBlock
+       | 'if' '(' bool_expr ')' '{' label_command_list '}' ('else' '{' label_command_list '}')? ';' #IfElseBlock
+       | 'while' '(' bool_expr ')' '{' label_command_list '}' ';' #WhileBlock
        | (data_types)? varName=IDENTIFIER '=' function_call ';' #FunctionToVarAssign
        | function_call ';' #FunctionCall
        | print_statement ';' #PrintExpression

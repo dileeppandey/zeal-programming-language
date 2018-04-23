@@ -12,6 +12,7 @@ import compiler.parser.zealParser.AddContext;
 import compiler.parser.zealParser.AndOperatorContext;
 import compiler.parser.zealParser.ArgumentsContext;
 import compiler.parser.zealParser.BooleanDataTypeContext;
+import compiler.parser.zealParser.CommandContext;
 import compiler.parser.zealParser.Command_listContext;
 import compiler.parser.zealParser.DeclarationsContext;
 import compiler.parser.zealParser.DivideContext;
@@ -31,6 +32,7 @@ import compiler.parser.zealParser.GreaterThanEqualContext;
 import compiler.parser.zealParser.IfElseBlockContext;
 import compiler.parser.zealParser.Initialization_boolContext;
 import compiler.parser.zealParser.Initialization_intContext;
+import compiler.parser.zealParser.Label_command_listContext;
 import compiler.parser.zealParser.LessThanContext;
 import compiler.parser.zealParser.LessThanEqualContext;
 import compiler.parser.zealParser.Main_command_listContext;
@@ -68,10 +70,30 @@ import compiler.parser.zealParser.WhileBlockContext;
  */
 public class ZealCustomVisitor extends zealBaseVisitor<String> {
 
+	private static int blockCount = 0;
+
 	/*
 	 * This map will have key of the block name and value as variable name
 	 */
 	Map<String, String> scopeVariableMap = new HashMap<String, String>();
+
+	@Override
+	public String visitLabel_command_list(Label_command_listContext ctx) {
+		blockCount++;
+		String labelName = "label_"+blockCount;
+		String mainCode = labelName + "\n";
+		for (int i = 0; i < ctx.getChildCount(); i++) {
+			if(i==0) {
+				mainCode+=labelName + ":\n";
+			}
+			ParseTree child = ctx.getChild(i);
+			String instructions = visit(child);
+			if (child instanceof CommandContext) {
+				mainCode += instructions;
+			}
+		}
+		return mainCode + labelName +"_end:";
+	}
 
 	@Override
 	public String visitDeclarations(DeclarationsContext ctx) {
@@ -216,7 +238,8 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 
 	@Override
 	public String visitEquality(EqualityContext ctx) {
-		return visitChildren(ctx);
+		String stmt = "\nbeq " + ctx.left.getText() + " " + ctx.right.getText() + " ";
+		return visitChildren(ctx) + stmt;
 	}
 
 	@Override
@@ -362,7 +385,7 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 	 */
 	@Override
 	public String visitFalseExpression(FalseExpressionContext ctx) {
-		return visitChildren(ctx);
+		return visitChildren(ctx) + "false";
 	}
 
 	/**
