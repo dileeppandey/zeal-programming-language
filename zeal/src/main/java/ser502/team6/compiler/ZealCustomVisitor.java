@@ -200,7 +200,7 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 
 	@Override
 	public String visitMultiply(MultiplyContext ctx) {
-		String stmt = "PROD " + ctx.left.getText() + " " + ctx.right.getText() + "\n";
+		String stmt = "MUL " + ctx.left.getText() + " " + ctx.right.getText() + "\n";
 		return stmt;
 	}
 
