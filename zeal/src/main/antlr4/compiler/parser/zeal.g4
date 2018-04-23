@@ -1,8 +1,9 @@
 grammar zeal;
 //entry point for grammer
-program: main_command_list ;   
+program: main_command_list+ ;   
 
-main_command_list: command_list | function | command_list main_command_list | function main_command_list;
+main_command_list: command_list #commands
+                  | function #functions;
 
 command_list: command 
             | command command_list ;
@@ -68,12 +69,12 @@ print_pattern :  varName=IDENTIFIER #PrintSymbol
 	| function_call #PrintFunctionCall
 	;
 
-factor: varName=IDENTIFIER
-        | INT_VAL
-        | '(' expr ')'
+factor: varName=IDENTIFIER #variableAssign
+        | value=INT_VAL #valueAssign
+        | expression='(' expr ')' #expressionAssign
         ;
 
-function: 'function' returnType=return_types functionName=IDENTIFIER  '(' (arguments)* ')' '{' function_command_list (return_stmt ';')*  '}';
+function: 'function' returnType=return_types functionName=IDENTIFIER  '(' (argumentList+=arguments)* ')' '{' function_command_list (return_stmt ';')*  '}';
 arguments: data_types varName=IDENTIFIER | data_types varName=IDENTIFIER ',' arguments;
 
 function_call: functionName=IDENTIFIER '(' (params)* ')' ; 

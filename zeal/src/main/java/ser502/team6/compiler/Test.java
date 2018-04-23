@@ -6,7 +6,6 @@ import org.antlr.v4.runtime.ANTLRFileStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 
-import compiler.parser.zealBaseVisitor;
 import compiler.parser.zealLexer;
 import compiler.parser.zealParser;
 
@@ -17,9 +16,9 @@ public class Test {
 		try {
 			input = new ANTLRFileStream(path);
 			ParseTree tree = parse(input);
-			zealBaseVisitor<String> vst = new zealBaseVisitor<String>();
-			vst.visit(tree);
-			System.out.println(tree);
+			ZealCustomVisitor vst = new ZealCustomVisitor();
+			String intermediate = vst.visit(tree);
+			System.out.println(intermediate);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

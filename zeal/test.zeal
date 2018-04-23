@@ -1,32 +1,5 @@
-function num fun(num x)
-{
-    num y = 5;
-    y = y - 1;
-}
-
-num y;
-
-y = fun(val);
-
-if (abc=<tha)
-{
-	abc=4+3;
-} 
-else 
-{
-	abc=4+5;
-};
-
-num x = -5;
-
-print("Hi");
-
-print(x, y, z);
-
-function num calc(num x, num y) {
-	print(x, y);
-}
-
-num y = calc(x, x);
-
-print(calc(x,x));
+num z = 3;
+z = 2;
+bool y = true;
+print("hello");
+t=3;
