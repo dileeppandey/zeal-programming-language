@@ -170,7 +170,7 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 
 	@Override
 	public String visitAdd(AddContext ctx) {
-		String stmt = "ADD " + ctx.left.getText() + " " + ctx.right.getText() + "\n";
+		String stmt = "ADD\n" + visit(ctx.left) + "\n" + visit(ctx.right) + "\n";
 		return stmt;
 	}
 
@@ -239,7 +239,7 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 
 	@Override
 	public String visitDivide(DivideContext ctx) {
-		String stmt = "DIV " + ctx.left.getText() + " " + ctx.right.getText() + "\n";
+		String stmt = "DIV\n" + visit(ctx.left) + "\n" + visit(ctx.right) + "\n";
 		return stmt;
 	}
 
@@ -262,7 +262,7 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 
 	@Override
 	public String visitMultiply(MultiplyContext ctx) {
-		String stmt = "MUL " + ctx.left.getText() + " " + ctx.right.getText() + "\n";
+		String stmt = "MUL\n" + visit(ctx.left) + "\n" + visit(ctx.right) + "\n";
 		return stmt;
 	}
 
@@ -284,7 +284,7 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 
 	@Override
 	public String visitSub(SubContext ctx) {
-		String stmt = "\nSUB " + ctx.left.getText() + " " + ctx.right.getText() + "\n";
+		String stmt = "\nSUB\n" + visit(ctx.left) + "\n" + visit(ctx.right) + "\n";
 		return stmt;
 	}
 
@@ -408,7 +408,7 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 
 	@Override
 	public String visitMod(ModContext ctx) {
-		String stmt = "MOD " + ctx.left.getText() + " " + ctx.right.getText() + "\n";
+		String stmt = "MOD\n" + visit(ctx.left) + "\n" + visit(ctx.right) + "\n";
 		return stmt;
 	}
 
