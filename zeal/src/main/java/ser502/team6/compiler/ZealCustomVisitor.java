@@ -8,6 +8,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.RuleNode;
 
 import compiler.parser.zealBaseVisitor;
+import compiler.parser.zealParser;
 import compiler.parser.zealParser.AddContext;
 import compiler.parser.zealParser.AndOperatorContext;
 import compiler.parser.zealParser.ArgumentsContext;
@@ -55,6 +56,7 @@ import compiler.parser.zealParser.ReturnExpressionContext;
 import compiler.parser.zealParser.ReturnTypeDataTypeContext;
 import compiler.parser.zealParser.ReturnTypeVoidContext;
 import compiler.parser.zealParser.ReturnVariableContext;
+import compiler.parser.zealParser.Return_typesContext;
 import compiler.parser.zealParser.SubContext;
 import compiler.parser.zealParser.TrueExpressionContext;
 import compiler.parser.zealParser.ValueAssignContext;
@@ -73,12 +75,19 @@ import compiler.parser.zealParser.WhileBlockContext;
 public class ZealCustomVisitor extends zealBaseVisitor<String> {
 
 	private static int blockCount = 0;
+	private static int argCount = 0;
 
 	/*
 	 * This map will have key of the block name and value as variable name
 	 */
 	Map<String, String> scopeVariableMap = new HashMap<String, String>();
-
+@Override
+	public String visitFunctions(@NotNull zealParser.FunctionsContext ctx) 
+	{
+	ParseTree child = ctx.function();
+	String op = visit(child);
+    return op;
+	}
 	@Override
 	public String visitLabel_command_list_if(Label_command_list_ifContext ctx) {
 		blockCount++;
@@ -139,7 +148,7 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 			return visitChildren(ctx);
 		} else {
 			type = ctx.data_types().getText();
-			return type + " " + varName + " " + visitChildren(ctx);
+			return "DECLARE "+type + " " + varName + " " + visitChildren(ctx);
 		}
 	}
 
@@ -269,11 +278,33 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 	@Override
 	public String visitFunction(FunctionContext ctx) {
 
-		visit(ctx.returnType);
 		// visit(ctx.argumentList);
+		String funcBody = visitFunction_command_list(ctx.function_command_list());
+		String arguments = visitArguments(ctx.arguments);
+		int argumentCount = (ctx.arguments!=null)?ctx.arguments.getText().split(",").length:0;
+		String returnType = ctx.returnType.getText();
 		String funcName = ctx.functionName.getText();
-
-		return visitChildren(ctx) + funcName;
+		String returnVariable = (ctx.return_stmt(0)==null)?"VOID":ctx.return_stmt(0).getText();
+		StringBuilder funcCall = new StringBuilder();
+		funcCall.append("FUNCTION");
+	    funcCall.append(" ");
+	    funcCall.append(funcName);
+	    funcCall.append(":<");
+	    funcCall.append(returnType);
+	    funcCall.append(">:<");
+	    funcCall.append(argumentCount);
+	    funcCall.append(">\n");
+	    funcCall.append(arguments);
+	    funcCall.append("\n");
+	    funcCall.append(funcBody);
+	    if(returnVariable != "VOID") {
+			funcCall.append("RETURN");
+			funcCall.append("\t");
+			funcCall.append(returnVariable.replace("return",""));
+			funcCall.append("\n");
+	    }
+	    funcCall.append("END FUNCTION");
+	    return funcCall.toString();
 	}
 
 	@Override
@@ -306,7 +337,8 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 
 	@Override
 	public String visitParams(ParamsContext ctx) {
-		return visitChildren(ctx);
+		argCount++;
+		return "param"+argCount+":"+ctx.varName.getText()+"\n"+visitChildren(ctx);
 	}
 
 	@Override
@@ -326,7 +358,7 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 
 	@Override
 	public String visitReturnTypeVoid(ReturnTypeVoidContext ctx) {
-		return visitChildren(ctx);
+		return "VOID "+visitChildren(ctx);
 	}
 
 	@Override
@@ -378,7 +410,12 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 
 	@Override
 	public String visitFunctionCall(FunctionCallContext ctx) {
-		return visitChildren(ctx);
+		StringBuilder funcCall = new StringBuilder();
+		funcCall.append("call_function ");
+		funcCall.append(ctx.function_call().functionName.getText());
+	    funcCall.append("\n");
+	    argCount = 0;
+		return funcCall.toString()+visitChildren(ctx)+"end_function"+"\n";
 	}
 
 	@Override
@@ -414,7 +451,20 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 
 	@Override
 	public String visitArguments(ArgumentsContext ctx) {
-		return visitChildren(ctx);
+		StringBuilder argBuilder = new StringBuilder();
+		if(ctx != null) {
+		String moreArgs = visitChildren(ctx);
+		argBuilder.append("ARGUMENT ");
+		argBuilder.append(ctx.data_types().getText());
+		argBuilder.append(" ");
+		argBuilder.append(ctx.varName.getText());
+		if(moreArgs.length()>0)
+			{
+				argBuilder.append("\n");
+				argBuilder.append(visitChildren(ctx));
+			}
+		}
+		return argBuilder.toString();
 	}
 
 	/**
