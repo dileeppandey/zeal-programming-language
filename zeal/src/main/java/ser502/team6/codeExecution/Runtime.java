@@ -11,31 +11,31 @@ import java.util.regex.Pattern;
 import ser502.team6.util.Logger;
 
 public class Runtime {
-  // Construct ReservedLiteral set and labels map
-  private static List<String> instructionsList = new ArrayList<String>();
-  private static HashMap<String, Integer> labels = new HashMap<String, Integer>();
+	// Construct ReservedLiteral set and labels map
+	private static List<String> instructionsList = new ArrayList<String>();
+	private static HashMap<String, Integer> labels = new HashMap<String, Integer>();
 
-  private static void createProgramDataStructures(List<String> instructions) {
-    String[] instructionsArray =new String[instructions.size()];
-    instructionsArray = instructions.toArray(instructionsArray);
-    int programCounter = 0;
+	private static void createProgramDataStructures(List<String> instructions) {
+		String[] instructionsArray = new String[instructions.size()];
+		instructionsArray = instructions.toArray(instructionsArray);
+		int programCounter = 0;
 
-    for (int i = 0; i < instructionsArray.length; i++) {
-      Logger.printInfo(instructionsArray[i]);
-      String word = instructionsArray[i];
-      if(!word.isEmpty()) {
-        if(word.equalsIgnoreCase(ReservedLiteral.LABEL.toString())) {
-          i++;
-          labels.put(instructionsArray[i], programCounter);
-        } else {
-          instructionsList.add(word);
-          programCounter++;
-        }
-      }
-    }
-  }
+		for (int i = 0; i < instructionsArray.length; i++) {
+			Logger.printInfo(instructionsArray[i]);
+			String word = instructionsArray[i];
+			if (!word.isEmpty()) {
+				if (word.equalsIgnoreCase(ReservedLiteral.LABEL.toString())) {
+					i++;
+					labels.put(instructionsArray[i], programCounter);
+				} else {
+					instructionsList.add(word);
+					programCounter++;
+				}
+			}
+		}
+	}
 
-  public static void main(String[] args) {
+	public static void main(String[] args) {
     List<String> instructions = new ArrayList<String>();
     //    String sourcePath = "";
     //    if(args.length == 0) {
@@ -43,7 +43,7 @@ public class Runtime {
     //    }
     //    sourcePath = args[0];
     String sourcePath =
-        "code.txt";
+        "target/output.txt";
     File sourceFile = new File(sourcePath);
     String intermediateCode = "";
     try {
@@ -66,7 +66,7 @@ public class Runtime {
     Logger.printInfo(labels.toString());
 
     if(instructionsList.size() > 0) {
-      StackMachine.executeInstructions(instructionsList);
+      new StackMachine().executeInstructions(instructionsList);
     }
 
   }

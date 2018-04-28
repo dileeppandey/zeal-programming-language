@@ -148,7 +148,7 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 			return visitChildren(ctx);
 		} else {
 			type = ctx.data_types().getText();
-			return "DECLARE "+type + " " + varName + " " + visitChildren(ctx);
+			return type + " " + varName + " " + visitChildren(ctx);
 		}
 	}
 
