@@ -1,32 +1,24 @@
 package ser502.team6.codeExecution;
 
 public enum Instruction {
-  HALT,
-  PUSH,
-  ADD,
-  SUB,
-  MUL,
-  DIV,
-  MOD,
-  POW,
-  NOT,
-  AND,
-  OR,
-  POP,
-  ISEQ,
-  ISGE,
-  ISGT,
-  JIF,
-  JMP,
+  NUM,//DATA_TYPE
   LOAD,
   STORE,
-  CALL,
-  RET,
-  LABEL,
-  PRINT,
-  INPUT,
-  STACK_PUSH,
-  STACK_POP,
-  STACK_PEEK,
-  STACK_ISEMPTY
+  BOOL,//DATA_TYPE
+  ADD,
+  DIV,
+  BGE,
+  BLE,
+  MUL,
+  //FUNCTION,
+  //END_FUNCTION,
+  BNE,
+  SUB,
+  BEQ,
+  VOID,//DATA_TYPE
+  BLT,
+  BGT,
+  MOD,
+  
+  
 }

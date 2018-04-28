@@ -14,7 +14,7 @@ public class Runtime {
     //    }
     //    sourcePath = args[0];
     String sourcePath =
-        "/Users/dileeppandey/code/git/ser502/zeal/src/main/java/ser502/team6/codeExecution/code.txt";
+        "code.txt";
     File sourceFile = new File(sourcePath);
     List<String> instructions = new ArrayList<String>();
     try {

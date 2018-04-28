@@ -56,28 +56,6 @@ num a = 2;
 num b = 3;
 add(a,b);
 
-function num add(num x,num y)
-{
-num final;
-final = x + y;
-num a = 2;
-num b = 3;
-add(a,b); 
-return final;
-}
-
-function void fib(num x)
-{
- if(((x==1)||(x==2))||(x==0))
-  {
-  	print(x);
-  } else 
-  {
-    num a = x - 1;
-    num b = x - 2;
-  	print(fib(a) + fib(b));
-  }
-}
 
 
 

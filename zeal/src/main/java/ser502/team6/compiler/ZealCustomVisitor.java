@@ -157,9 +157,9 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 		String varName = ctx.varName.getText();
 
 		if (ctx.INT_VAL() == null) {
-			return "num " + varName + " = " + visitChildren(ctx);
+			return "NUM " + varName + " = " + visitChildren(ctx);
 		} else {
-			String stmt = "num " + varName + "\nLOAD " + ctx.INT_VAL().getText() + "\nSTORE " + varName;
+			String stmt = "NUM " + varName + "\nLOAD " + ctx.INT_VAL().getText() + "\nSTORE " + varName;
 			return visitChildren(ctx) + stmt;
 		}
 	}
@@ -170,9 +170,9 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 		String varName = ctx.varName.getText();
 
 		if (ctx.bool_expr() == null) {
-			return "bool " + varName + " = " + visitChildren(ctx);
+			return "BOOL " + varName + " = " + visitChildren(ctx);
 		} else {
-			String stmt = "bool " + varName + "\nLOAD " + ctx.bool_expr().getText() + "\nSTORE " + varName;
+			String stmt = "BOOL " + varName + "\nLOAD " + ctx.bool_expr().getText() + "\nSTORE " + varName;
 			return visitChildren(ctx) + stmt;
 		}
 	}
@@ -303,7 +303,7 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 			funcCall.append(returnVariable.replace("return",""));
 			funcCall.append("\n");
 	    }
-	    funcCall.append("END FUNCTION");
+	    funcCall.append("END_FUNCTION");//CHECK THIS
 	    return funcCall.toString();
 	}
 
@@ -363,13 +363,13 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 
 	@Override
 	public String visitGreaterThanEqual(GreaterThanEqualContext ctx) {
-		String stmt = "BLT " + ctx.left.getText() + ", " + ctx.right.getText() + ", ";
+		String stmt = "BGT " + ctx.left.getText() + ", " + ctx.right.getText() + ", ";
 		return visitChildren(ctx) + stmt;
 	}
 
 	@Override
 	public String visitLessThanEqual(LessThanEqualContext ctx) {
-		String stmt = "BGT " + ctx.left.getText() + ", " + ctx.right.getText() + ", ";
+		String stmt = "BLT " + ctx.left.getText() + ", " + ctx.right.getText() + ", ";
 		return visitChildren(ctx) + stmt;
 	}
 
