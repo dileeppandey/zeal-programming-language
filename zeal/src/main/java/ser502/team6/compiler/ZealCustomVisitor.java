@@ -400,12 +400,12 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 
 	@Override
 	public String visitPrintSymbol(PrintSymbolContext ctx) {
-		return visitChildren(ctx);
+		return visitChildren(ctx) + "WRITE " + ctx.IDENTIFIER().getText() + "\n";
 	}
 
 	@Override
 	public String visitPrintRecursive(PrintRecursiveContext ctx) {
-		return visitChildren(ctx);
+		return "WRITE " + ctx.IDENTIFIER().getText() + "\n" + visitChildren(ctx) + "\n";
 	}
 
 	@Override

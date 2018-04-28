@@ -1,2 +1,3 @@
 num z;
 z = (117 - 17) * 15;
+print(z, z, z, z, "hello");

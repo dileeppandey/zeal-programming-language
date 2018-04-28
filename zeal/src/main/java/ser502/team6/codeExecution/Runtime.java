@@ -21,7 +21,7 @@ public class Runtime {
 		int programCounter = 0;
 
 		for (int i = 0; i < instructionsArray.length; i++) {
-			Logger.printInfo(instructionsArray[i]);
+//			Logger.printInfo(instructionsArray[i]);
 			String word = instructionsArray[i];
 			if (!word.isEmpty()) {
 				if (word.equalsIgnoreCase(ReservedLiteral.LABEL.toString())) {
@@ -53,17 +53,17 @@ public class Runtime {
       }
       scan.close();
     } catch (IOException e) {
-      Logger.printError("Cannot find file " + sourcePath);
+//      Logger.printError("Cannot find file " + sourcePath);
     }
     Pattern pattern = Pattern.compile("(\"[^\"]+\")|\\S+");
     Matcher matcher = pattern.matcher(intermediateCode);
     while(matcher.find()) {
-      instructions.add(matcher.group().replaceAll("\"", ""));
+      instructions.add(matcher.group());
     }
     // Create isntruction set and labels
     createProgramDataStructures(instructions);
-    Logger.printInfo(instructionsList.toString());
-    Logger.printInfo(labels.toString());
+//    Logger.printInfo(instructionsList.toString());
+//    Logger.printInfo(labels.toString());
 
     if(instructionsList.size() > 0) {
       new StackMachine().executeInstructions(instructionsList);

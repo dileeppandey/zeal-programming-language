@@ -11,11 +11,13 @@ public class StackMachine {
 	private int currentLine = 0;
 	private int continuousAdditionToVarStack = 0;
 
+	private boolean isPrinting = false;
+
 	public void executeInstructions(List<String> instructionsList) {
 		for (currentLine = 0; currentLine < instructionsList
 				.size(); currentLine++) {
 
-			System.out.println(instructionsList.get(currentLine));
+//			System.out.println(instructionsList.get(currentLine));
 
 			if (instructionsList.get(currentLine).equalsIgnoreCase("END")) {
 				break;
@@ -24,10 +26,12 @@ public class StackMachine {
 			if (instructionsList.get(currentLine).equalsIgnoreCase("num")) {
 				Entity entity = new Entity("num", "");
 				symbolTable.insert(instructionsList.get(++currentLine), entity);
+				isPrinting = false;
 			} else if (instructionsList.get(currentLine)
 					.equalsIgnoreCase("load")) {
 				variableStack.push(instructionsList.get(++currentLine));
 				continuousAdditionToVarStack++;
+				isPrinting = false;
 			} else if (instructionsList.get(currentLine).equalsIgnoreCase("add")
 					|| instructionsList.get(currentLine).equalsIgnoreCase("mul")
 					|| instructionsList.get(currentLine).equalsIgnoreCase("div")
@@ -36,13 +40,30 @@ public class StackMachine {
 							.equalsIgnoreCase("mod")) {
 				operatorStack.push(instructionsList.get(currentLine));
 				continuousAdditionToVarStack = 0;
+				isPrinting = false;
 			} else if (instructionsList.get(currentLine)
 					.equalsIgnoreCase("store")) {
 				recursivelyPerformStackedOperations();
 
 				symbolTable.symbolTable.get(instructionsList
 						.get(++currentLine)).attribute = variableStack.pop();
-
+				isPrinting = false;
+			} else if (instructionsList.get(currentLine)
+					.equalsIgnoreCase("write")) {
+				isPrinting = true;
+				continue;
+			}
+			
+			if(isPrinting) {
+				if(instructionsList.get(currentLine).contains("\"")){
+					System.out.println(instructionsList.get(currentLine).replaceAll("\"", ""));
+				} else {
+					if(symbolTable.symbolTable.containsKey(instructionsList.get(currentLine))) {
+						System.out.println(symbolTable.symbolTable.get(instructionsList.get(currentLine)).attribute);
+					} else {
+						//TODO: call funtion here
+					}
+				}
 			}
 
 			if (continuousAdditionToVarStack == 2) {
@@ -50,7 +71,7 @@ public class StackMachine {
 			}
 		}
 
-		System.out.println(symbolTable.symbolTable.get("z").attribute);
+//		System.out.println(symbolTable.symbolTable.get("z").attribute);
 
 	}
 
