@@ -1,8 +1,13 @@
-num z;
-z = (117 - 17) * 15 - 2;
+num y = 3;
+num n;
+num z = 1;
+n = y + 2;
+if( z < 11 ) {
 
-if(z < 1500 ) {
- 	print(z);
+	print("h1");
+
 };
-
-print("finished");
+while( z < 13 ) {
+	print(z);
+	z = z+2;
+}; 

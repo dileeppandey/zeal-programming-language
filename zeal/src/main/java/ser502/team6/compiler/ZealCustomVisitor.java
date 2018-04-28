@@ -363,13 +363,13 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 
 	@Override
 	public String visitGreaterThanEqual(GreaterThanEqualContext ctx) {
-		String stmt = "BGT " + ctx.left.getText() + ", " + ctx.right.getText() + ", ";
+		String stmt = "BLT " + ctx.left.getText() + ", " + ctx.right.getText() + ", ";
 		return visitChildren(ctx) + stmt;
 	}
 
 	@Override
 	public String visitLessThanEqual(LessThanEqualContext ctx) {
-		String stmt = "BLT " + ctx.left.getText() + ", " + ctx.right.getText() + ", ";
+		String stmt = "BGT " + ctx.left.getText() + ", " + ctx.right.getText() + ", ";
 		return visitChildren(ctx) + stmt;
 	}
 

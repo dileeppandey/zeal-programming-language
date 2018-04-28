@@ -1,5 +1,6 @@
 package ser502.team6.codeExecution;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
 
@@ -8,6 +9,7 @@ public class StackMachine {
 	private Stack<String> variableStack = new Stack<String>();
 	private Stack<String> booleanOperationStack = new Stack<String>();
 	private Stack<String> booleanSymbolsStack = new Stack<String>();
+	private HashMap<String,Integer> whileLoopStatements = new HashMap<String,Integer>();
 	SymbolTable symbolTable = new SymbolTable();
 	private int currentLine = 0;
 	private int continuousAdditionToVarStack = 0;
@@ -51,8 +53,11 @@ public class StackMachine {
 				operatorStack.push(instructionsList.get(currentLine));
 				continuousAdditionToVarStack = 0;
 				isPrinting = false;
-			} else if (instructionsList.get(currentLine)
-					.equalsIgnoreCase("store")) {
+			} else if (instructionsList.get(currentLine).contains("while:")) {
+				whileLoopStatements.put(instructionsList.get(currentLine).replace(":",""),currentLine);
+			} else if (instructionsList.get(currentLine).equalsIgnoreCase("goto")) {
+				currentLine = whileLoopStatements.get(instructionsList.get(currentLine+1));
+			} else if (instructionsList.get(currentLine).equalsIgnoreCase("store")) {
 				recursivelyPerformStackedOperations();
 
 				symbolTable.symbolTable.get(instructionsList
@@ -78,19 +83,22 @@ public class StackMachine {
 				if (flag == false) {
 					// TODO: start executing below code
 					currentLine = currentLine + 3;
+					if(instructionsList.get(currentLine).contains("while_end)")) currentLine ++;
 				} else {
 					// TODO: go to instructionsList.get(currentLine+3)
 					String labelForElse = instructionsList.get(currentLine + 3) + ":";
+					String labelForWhileEnd = instructionsList.get(currentLine + 3) + ":";
 					currentLine = currentLine + 3;
 					boolean endNotFound = true;
 					while(endNotFound) {
 						if(instructionsList.get(currentLine).equalsIgnoreCase(labelForElse)) {
 							endNotFound = false;
-						} else {
+						} else if(instructionsList.get(currentLine).equalsIgnoreCase(labelForWhileEnd)){
+							endNotFound = false;
+						}else {
 							currentLine++;
 						}
 					}
-
 				}
 			}
 
@@ -184,7 +192,24 @@ public class StackMachine {
 		String var1 = variableStack.pop();
 
 		String operation = operatorStack.pop();
-
+		try
+		{
+		  Double.parseDouble(var2);
+		}
+		catch(NumberFormatException e)
+		{
+		  Entity entity_var2 = symbolTable.symbolTable.get(var2);
+		  var2 = (entity_var2 == null)?"NOTDEFINED":entity_var2.attribute;
+		}
+		try
+		{
+		  Double.parseDouble(var1);
+		}
+		catch(NumberFormatException e)
+		{
+		  Entity entity_var1 = symbolTable.symbolTable.get(var1);
+		  var1 = (entity_var1 == null)?"NOTDEFINED":entity_var1.attribute;
+		}
 		switch (operation.toLowerCase()) {
 		case "add":
 			variableStack.push(String.valueOf(
