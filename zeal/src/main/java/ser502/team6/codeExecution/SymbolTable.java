@@ -14,6 +14,4 @@ public class SymbolTable {
     this.symbolTable.put(identifierName, entity);
   }
 
-  
-
 }
