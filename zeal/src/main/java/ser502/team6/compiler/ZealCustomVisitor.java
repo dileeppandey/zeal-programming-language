@@ -327,7 +327,7 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 
 	@Override
 	public String visitAndOperator(AndOperatorContext ctx) {
-		return visitChildren(ctx);
+		return "AND " + visit(ctx.left) + visit(ctx.right);
 	}
 
 	@Override
@@ -430,7 +430,7 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 
 	@Override
 	public String visitOrOperator(OrOperatorContext ctx) {
-		return visitChildren(ctx);
+		return "OR " + visit(ctx.left) + visit(ctx.right);
 	}
 
 	@Override

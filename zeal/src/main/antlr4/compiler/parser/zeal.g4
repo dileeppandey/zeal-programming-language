@@ -53,8 +53,8 @@ bool_expr: 'true' #TrueExpression
          | left=expr '>' right=expr #GreaterThan
          | left=expr '<' right=expr #LessThan
          | '!' '(' bool_expr ')' #NotEqual
-         | '(' bool_expr ')' '&&' '(' bool_expr ')' #AndOperator
-         | '(' bool_expr ')' '||' '(' bool_expr ')' #OrOperator
+         | '(' left=bool_expr ')' '&&' '(' right=bool_expr ')' #AndOperator
+         | '(' left=bool_expr ')' '||' '(' right=bool_expr ')' #OrOperator
          ;
 
 //precedence expression evaluation

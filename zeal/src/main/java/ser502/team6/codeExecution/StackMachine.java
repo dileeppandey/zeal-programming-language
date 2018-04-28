@@ -4,20 +4,27 @@ import java.util.List;
 import java.util.Stack;
 
 public class StackMachine {
-
 	private Stack<String> operatorStack = new Stack<String>();
 	private Stack<String> variableStack = new Stack<String>();
+	private Stack<String> booleanOperationStack = new Stack<String>();
+	private Stack<String> booleanSymbolsStack = new Stack<String>();
 	SymbolTable symbolTable = new SymbolTable();
 	private int currentLine = 0;
 	private int continuousAdditionToVarStack = 0;
+	List<String> instructionsList;
 
 	private boolean isPrinting = false;
 
 	public void executeInstructions(List<String> instructionsList) {
+		this.instructionsList = instructionsList;
+		iterateOverInstructions();
+	}
+
+	private void iterateOverInstructions() {
 		for (currentLine = 0; currentLine < instructionsList
 				.size(); currentLine++) {
 
-//			System.out.println(instructionsList.get(currentLine));
+			// System.out.println(instructionsList.get(currentLine));
 
 			if (instructionsList.get(currentLine).equalsIgnoreCase("END")) {
 				break;
@@ -30,7 +37,10 @@ public class StackMachine {
 			} else if (instructionsList.get(currentLine)
 					.equalsIgnoreCase("load")) {
 				variableStack.push(instructionsList.get(++currentLine));
-				continuousAdditionToVarStack++;
+				if(!operatorStack.isEmpty()) {
+					continuousAdditionToVarStack++;
+				}
+				
 				isPrinting = false;
 			} else if (instructionsList.get(currentLine).equalsIgnoreCase("add")
 					|| instructionsList.get(currentLine).equalsIgnoreCase("mul")
@@ -52,16 +62,49 @@ public class StackMachine {
 					.equalsIgnoreCase("write")) {
 				isPrinting = true;
 				continue;
-			}
-			
-			if(isPrinting) {
-				if(instructionsList.get(currentLine).contains("\"")){
-					System.out.println(instructionsList.get(currentLine).replaceAll("\"", ""));
+			} else if (instructionsList.get(currentLine).equalsIgnoreCase("BGE")
+					|| instructionsList.get(currentLine).equalsIgnoreCase("BGT")
+					|| instructionsList.get(currentLine).equalsIgnoreCase("BLT")
+					|| instructionsList.get(currentLine).equalsIgnoreCase("BLE")
+					|| instructionsList.get(currentLine).equalsIgnoreCase("BEQ")
+					|| instructionsList.get(currentLine)
+							.equalsIgnoreCase("BNE")) {
+				booleanOperationStack.push(instructionsList.get(currentLine));
+				booleanSymbolsStack.push(instructionsList.get(currentLine + 1));
+				booleanSymbolsStack.push(instructionsList.get(currentLine + 2));
+
+				boolean flag = evaluateBoolean();
+
+				if (flag == false) {
+					// TODO: start executing below code
+					currentLine = currentLine + 3;
 				} else {
-					if(symbolTable.symbolTable.containsKey(instructionsList.get(currentLine))) {
-						System.out.println(symbolTable.symbolTable.get(instructionsList.get(currentLine)).attribute);
+					// TODO: go to instructionsList.get(currentLine+3)
+					String labelForElse = instructionsList.get(currentLine + 3) + ":";
+					currentLine = currentLine + 3;
+					boolean endNotFound = true;
+					while(endNotFound) {
+						if(instructionsList.get(currentLine).equalsIgnoreCase(labelForElse)) {
+							endNotFound = false;
+						} else {
+							currentLine++;
+						}
+					}
+
+				}
+			}
+
+			if (isPrinting) {
+				if (instructionsList.get(currentLine).contains("\"")) {
+					System.out.println(instructionsList.get(currentLine)
+							.replaceAll("\"", ""));
+				} else {
+					if (symbolTable.symbolTable
+							.containsKey(instructionsList.get(currentLine))) {
+						System.out.println(symbolTable.symbolTable.get(
+								instructionsList.get(currentLine)).attribute);
 					} else {
-						//TODO: call funtion here
+						// TODO: call funtion here
 					}
 				}
 			}
@@ -71,7 +114,60 @@ public class StackMachine {
 			}
 		}
 
-//		System.out.println(symbolTable.symbolTable.get("z").attribute);
+		// System.out.println(symbolTable.symbolTable.get("z").attribute);
+
+	}
+
+	private boolean evaluateBoolean() {
+
+		String right = booleanSymbolsStack.pop().replaceAll(",", "");
+		String left = booleanSymbolsStack.pop().replaceAll(",", "");
+		String condition = booleanOperationStack.pop();
+		
+		if(!right.matches("[0-9]+") && !right.matches("[0-9.]+")) {
+			right = symbolTable.symbolTable.get(right).attribute;
+		}
+		
+		if(!left.matches("[0-9]+") && !left.matches("[0-9.]+")) {
+			left = symbolTable.symbolTable.get(left).attribute;
+		}
+
+		switch (condition) {
+		case "BGE":
+			if (Double.parseDouble(left) >= Double.parseDouble(right)) {
+				return true;
+			}
+			break;
+		case "BGT":
+			if (Double.parseDouble(left) > Double.parseDouble(right)) {
+				return true;
+			}
+			break;
+		case "BLT":
+			if (Double.parseDouble(left) < Double.parseDouble(right)) {
+				return true;
+			}
+			break;
+		case "BLE":
+			if (Double.parseDouble(left) <= Double.parseDouble(right)) {
+				return true;
+			}
+			break;
+		case "BEQ":
+			if (Double.parseDouble(left) == Double.parseDouble(right)) {
+				return true;
+			}
+			break;
+		case "BNE":
+			if (Double.parseDouble(left) != Double.parseDouble(right)) {
+				return true;
+			}
+			break;
+		default:
+			break;
+		}
+
+		return false;
 
 	}
 

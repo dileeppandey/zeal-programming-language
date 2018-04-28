@@ -1,3 +1,8 @@
 num z;
-z = (117 - 17) * 15;
-print(z, z, z, z, "hello");
+z = (117 - 17) * 15 - 2;
+
+if(z < 1500 ) {
+ 	print(z);
+};
+
+print("finished");
