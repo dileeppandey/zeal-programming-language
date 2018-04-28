@@ -12,6 +12,6 @@ public class SymbolTable {
 
   public void insert(String identifierName, Entity entity) {
     this.symbolTable.put(identifierName, entity);
-  }
+  } 
 
 }
