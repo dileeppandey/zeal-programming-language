@@ -1,64 +1,24 @@
-num z
-LOAD 3
-STORE z
-LOAD 2
-STORE z
-bool y
-LOAD true
-STORE y
-WRITE "hello"
-
-LOAD 3
-STORE t
-
-
-
-ADD
-LOAD 2
-LOAD t
-
-
-STORE z
-num v
-DIV
-LOAD 3
-LOAD 3
-STORE v
-num m
-MUL
-LOAD 3
-LOAD 3
-STORE m
-num n
-MOD
-LOAD 3
-LOAD 4
-STORE n
-LOAD n
-LOAD 3
-BLT n, 3, label_1_else
-ADD
-LOAD 4
-LOAD n
-STORE n
-label_1_else:
-LOAD 2
-STORE n
-LOAD 4
-STORE z
-LOAD z
-LOAD 2
-BEQ z, 2, label_2_else
-WRITE "Z is not equal to 2"
-label_2_else:
-label_3_while:
-LOAD n
-LOAD 4
-BGE n, 4, label_3_while_end
-ADD
-LOAD n
-LOAD 2
-STORE n
-goto label_3_while
-label_3_while_end:
-END
+PUSH 6
+STORE a
+LOAD a
+PUSH 5
+ISGE
+NOT
+JIF label_2
+PUSH "a is less than 5"
+PRINT
+JMP label_1
+LABEL label_2
+LOAD a
+PUSH 10
+ISGE
+NOT
+JIF label_3
+PUSH "a is greater or equal to 5 and less than 10"
+PRINT
+JMP label_1
+LABEL label_3
+PUSH "a is greater than 10"
+PRINT
+LABEL label_1
+HALT

@@ -1,6 +1,6 @@
 package ser502.team6.codeExecution;
 
-public enum Instruction {
+public enum ReservedLiteral {
   HALT,
   PUSH,
   ADD,

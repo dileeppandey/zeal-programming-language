@@ -1,7 +1,6 @@
 package ser502.team6.codeExecution;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
@@ -12,7 +11,7 @@ import java.util.regex.Pattern;
 import ser502.team6.util.Logger;
 
 public class Runtime {
-  // Construct Instruction set and labels map
+  // Construct ReservedLiteral set and labels map
   private static List<String> instructionsList = new ArrayList<String>();
   private static HashMap<String, Integer> labels = new HashMap<String, Integer>();
 
@@ -25,7 +24,7 @@ public class Runtime {
       Logger.printInfo(instructionsArray[i]);
       String word = instructionsArray[i];
       if(!word.isEmpty()) {
-        if(word.equalsIgnoreCase(Instruction.LABEL.toString())) {
+        if(word.equalsIgnoreCase(ReservedLiteral.LABEL.toString())) {
           i++;
           labels.put(instructionsArray[i], programCounter);
         } else {
@@ -65,6 +64,10 @@ public class Runtime {
     createProgramDataStructures(instructions);
     Logger.printInfo(instructionsList.toString());
     Logger.printInfo(labels.toString());
+
+    if(instructionsList.size() > 0) {
+      StackMachine.executeInstructions(instructionsList);
+    }
 
   }
 }
