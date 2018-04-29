@@ -1,0 +1,15 @@
+num z 
+LOAD 5
+STORE z
+num x 
+LOAD 10
+STORE x
+LOAD x
+LOAD z
+BLT x, z, label_1_endif
+WRITE "x is greater than z"
+label_1_endif:
+label_1_else:
+WRITE "x is less than z"
+label_1_endelse:
+END

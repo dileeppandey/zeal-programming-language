@@ -1,0 +1,27 @@
+NUM x
+LOAD 9
+STORE x
+NUM y
+LOAD 10
+STORE y
+NUM z
+LOAD 11
+STORE z
+NUM w
+LOAD 0
+STORE w
+num result 
+SUB
+MUL
+ADD
+LOAD x
+LOAD y
+LOAD z
+MUL
+MUL
+LOAD x
+LOAD y
+LOAD w
+STORE result
+WRITE result
+END

@@ -1,0 +1,9 @@
+NUM x 
+LOAD 5
+STORE x
+NUM z
+LOAD 6
+STORE z
+WRITE x
+WRITE z
+END

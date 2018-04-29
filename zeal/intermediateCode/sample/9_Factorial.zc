@@ -1,0 +1,27 @@
+NUM result
+LOAD 1
+STORE result
+NUM n
+LOAD 5
+STORE n
+NUM counter
+LOAD 5
+STORE counter
+label_1_while:
+LOAD counter
+LOAD 0
+BLE counter, 0, label_1_while_end
+MUL
+LOAD result
+LOAD counter
+STORE result
+SUB
+LOAD counter
+LOAD 1
+STORE counter
+goto label_1_while
+label_1_while_end:
+WRITE n
+WRITE "! ="
+WRITE result
+END

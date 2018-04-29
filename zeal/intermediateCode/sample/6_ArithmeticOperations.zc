@@ -4,56 +4,31 @@ STORE x
 NUM y
 LOAD 2
 STORE y
-num z 
-num w 
+NUM z 
+NUM w 
 ADD
 LOAD x
-
 LOAD y
-
 STORE z
 WRITE z
-
 SUB
 LOAD x
-
 LOAD y
-
 STORE z
 WRITE z
 MUL
 LOAD x
-
 LOAD y
 STORE z
 WRITE z
 DIV
 LOAD x
-
 LOAD y
 STORE z
 WRITE z
 MOD
 LOAD x
-
 LOAD y
 STORE z
 WRITE z
-
-SUB
-MUL
-ADD
-LOAD x
-
-LOAD y
-
-
-
-LOAD x
-
-LOAD z
-
-STORE w
-WRITE w
-
 END

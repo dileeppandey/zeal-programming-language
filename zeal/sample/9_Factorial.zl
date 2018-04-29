@@ -1,0 +1,8 @@
+num result = 1;
+num n = 5;
+num counter = 5;
+while(counter > 0) {
+  result = result * counter;
+  counter = counter - 1;
+};
+print(result);

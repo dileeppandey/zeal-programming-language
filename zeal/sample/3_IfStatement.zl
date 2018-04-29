@@ -1,0 +1,4 @@
+num z = 3;
+if(z!=2) {
+	print("Z is not equal to 2");
+};

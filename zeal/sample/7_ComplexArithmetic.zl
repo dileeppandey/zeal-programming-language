@@ -1,0 +1,8 @@
+num x = 9;
+num y = 10;
+num z = 11;
+num w = 0;
+
+num result;
+result = (x + y) * z - (x * y * w);
+print(result);

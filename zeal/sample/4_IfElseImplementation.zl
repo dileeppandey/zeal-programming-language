@@ -4,10 +4,6 @@ z = 5;
 num x;
 x = 10;
 
-if(z!=2) {
-	print("Z is not equal to 2");
-};
-
 if(x >= z) {
   print("x is greater than z");
 }

@@ -1,0 +1,7 @@
+num x;
+x = 5;
+
+num z = 6;
+
+print(x);
+print(z);

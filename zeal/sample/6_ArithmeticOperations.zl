@@ -17,6 +17,3 @@ print(z);
 
 z = x % y;
 print(z);
-
-w = (x + y) * x - z;
-print(w);

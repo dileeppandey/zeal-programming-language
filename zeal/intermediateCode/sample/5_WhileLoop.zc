@@ -1,0 +1,15 @@
+NUM counter
+LOAD 10
+STORE counter
+label_1_while:
+LOAD counter
+LOAD 0
+BEQ counter, 0, label_1_while_end
+WRITE counter
+SUB
+LOAD counter
+LOAD 1
+STORE counter
+goto label_1_while
+label_1_while_end:
+END

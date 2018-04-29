@@ -1,0 +1,39 @@
+NUM i
+LOAD 4
+STORE i
+NUM j
+LOAD 4
+STORE j
+NUM count 
+MUL
+LOAD i
+LOAD j
+STORE count
+label_1_while:
+LOAD i
+LOAD 0
+BLE i, 0, label_1_while_end
+label_2_while:
+LOAD j
+LOAD 0
+BLE j, 0, label_2_while_end
+WRITE count
+WRITE "beers!"
+WRITE "Pass one around."
+SUB
+LOAD count
+LOAD 1
+STORE count
+SUB
+LOAD j
+LOAD 1
+STORE j
+goto label_2_while
+label_2_while_end:
+SUB
+LOAD i
+LOAD 1
+STORE i
+goto label_1_while
+label_1_while_end:
+END
