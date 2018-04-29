@@ -46,6 +46,7 @@ initialization_bool: varName=IDENTIFIER '=' bool_expr
 //boolean evaluations
 bool_expr: 'true' #TrueExpression
          | 'false' #FalseExpression
+         | IDENTIFIER #BoolIdentifier
          | left=expr '==' right=expr #Equality
          | left=expr '!=' right=expr #NotEqual
          | left=expr '=<' right=expr #EqualLessThan
