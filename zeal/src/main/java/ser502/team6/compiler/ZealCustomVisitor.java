@@ -12,6 +12,7 @@ import compiler.parser.zealParser;
 import compiler.parser.zealParser.AddContext;
 import compiler.parser.zealParser.AndOperatorContext;
 import compiler.parser.zealParser.ArgumentsContext;
+import compiler.parser.zealParser.BoolVarAssignContext;
 import compiler.parser.zealParser.BooleanDataTypeContext;
 import compiler.parser.zealParser.CommandContext;
 import compiler.parser.zealParser.Command_listContext;
@@ -56,7 +57,6 @@ import compiler.parser.zealParser.ReturnExpressionContext;
 import compiler.parser.zealParser.ReturnTypeDataTypeContext;
 import compiler.parser.zealParser.ReturnTypeVoidContext;
 import compiler.parser.zealParser.ReturnVariableContext;
-import compiler.parser.zealParser.Return_typesContext;
 import compiler.parser.zealParser.SubContext;
 import compiler.parser.zealParser.TrueExpressionContext;
 import compiler.parser.zealParser.ValueAssignContext;
@@ -104,8 +104,7 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 	}
 
 	@Override
-	public String visitLabel_command_list_else(
-			Label_command_list_elseContext ctx) {
+	public String visitLabel_command_list_else(Label_command_list_elseContext ctx) {
 		String mainCode = "label_" + blockCount + "_else:\n";
 		for (int i = 0; i < ctx.getChildCount(); i++) {
 			/*
@@ -121,8 +120,7 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 	}
 
 	@Override
-	public String visitLabel_command_list_while(
-			Label_command_list_whileContext ctx) {
+	public String visitLabel_command_list_while(Label_command_list_whileContext ctx) {
 		String labelName = "label_" + blockCount + "_while";
 		String mainCode = "label_" + blockCount + "_while_end" + "\n";
 		for (int i = 0; i < ctx.getChildCount(); i++) {
@@ -158,8 +156,7 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 		if (ctx.INT_VAL() == null) {
 			return "NUM " + varName + " = " + visitChildren(ctx);
 		} else {
-			String stmt = "NUM " + varName + "\nLOAD " + ctx.INT_VAL().getText()
-					+ "\nSTORE " + varName;
+			String stmt = "NUM " + varName + "\nLOAD " + ctx.INT_VAL().getText() + "\nSTORE " + varName;
 			return visitChildren(ctx) + stmt;
 		}
 	}
@@ -172,16 +169,14 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 		if (ctx.bool_expr() == null) {
 			return "BOOL " + varName + visitChildren(ctx);
 		} else {
-			String stmt = "BOOL " + varName + "\nLOAD "
-					+ ctx.bool_expr().getText() + "\nSTORE " + varName;
+			String stmt = "BOOL " + varName + "\nLOAD " + ctx.bool_expr().getText() + "\nSTORE " + varName;
 			return visitChildren(ctx) + stmt;
 		}
 	}
 
 	@Override
 	public String visitAdd(AddContext ctx) {
-		String stmt = "ADD\n" + visit(ctx.left) + "\n" + visit(ctx.right)
-				+ "\n";
+		String stmt = "ADD\n" + visit(ctx.left) + "\n" + visit(ctx.right) + "\n";
 		return stmt;
 	}
 
@@ -250,8 +245,7 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 
 	@Override
 	public String visitDivide(DivideContext ctx) {
-		String stmt = "DIV\n" + visit(ctx.left) + "\n" + visit(ctx.right)
-				+ "\n";
+		String stmt = "DIV\n" + visit(ctx.left) + "\n" + visit(ctx.right) + "\n";
 		return stmt;
 	}
 
@@ -262,22 +256,19 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 
 	@Override
 	public String visitLessThan(LessThanContext ctx) {
-		String stmt = "BGE " + ctx.left.getText() + ", " + ctx.right.getText()
-				+ ", ";
+		String stmt = "BGE " + ctx.left.getText() + ", " + ctx.right.getText() + ", ";
 		return visitChildren(ctx) + stmt;
 	}
 
 	@Override
 	public String visitGreaterThan(GreaterThanContext ctx) {
-		String stmt = "BLE " + ctx.left.getText() + ", " + ctx.right.getText()
-				+ ", ";
+		String stmt = "BLE " + ctx.left.getText() + ", " + ctx.right.getText() + ", ";
 		return visitChildren(ctx) + stmt;
 	}
 
 	@Override
 	public String visitMultiply(MultiplyContext ctx) {
-		String stmt = "MUL\n" + visit(ctx.left) + "\n" + visit(ctx.right)
-				+ "\n";
+		String stmt = "MUL\n" + visit(ctx.left) + "\n" + visit(ctx.right) + "\n";
 		return stmt;
 	}
 
@@ -285,16 +276,12 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 	public String visitFunction(FunctionContext ctx) {
 
 		// visit(ctx.argumentList);
-		String funcBody = visitFunction_command_list(
-				ctx.function_command_list());
+		String funcBody = visitFunction_command_list(ctx.function_command_list());
 		String arguments = visitArguments(ctx.arguments);
-		int argumentCount = (ctx.arguments != null)
-				? ctx.arguments.getText().split(",").length
-				: 0;
+		int argumentCount = (ctx.arguments != null) ? ctx.arguments.getText().split(",").length : 0;
 		String returnType = ctx.returnType.getText();
 		String funcName = ctx.functionName.getText();
-		String returnVariable = (ctx.return_stmt(0) == null) ? "VOID"
-				: ctx.return_stmt(0).getText();
+		String returnVariable = (ctx.return_stmt(0) == null) ? "VOID" : ctx.return_stmt(0).getText();
 		StringBuilder funcCall = new StringBuilder();
 		funcCall.append("FUNCTION");
 		funcCall.append(" ");
@@ -319,22 +306,19 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 
 	@Override
 	public String visitEquality(EqualityContext ctx) {
-		String stmt = "BNE " + ctx.left.getText() + ", " + ctx.right.getText()
-				+ ", ";
+		String stmt = "BNE " + ctx.left.getText() + ", " + ctx.right.getText() + ", ";
 		return visitChildren(ctx) + stmt;
 	}
 
 	@Override
 	public String visitSub(SubContext ctx) {
-		String stmt = "\nSUB\n" + visit(ctx.left) + "\n" + visit(ctx.right)
-				+ "\n";
+		String stmt = "\nSUB\n" + visit(ctx.left) + "\n" + visit(ctx.right) + "\n";
 		return stmt;
 	}
 
 	@Override
 	public String visitNotEqual(NotEqualContext ctx) {
-		String stmt = "BEQ " + ctx.left.getText() + ", " + ctx.right.getText()
-				+ ", ";
+		String stmt = "BEQ " + ctx.left.getText() + ", " + ctx.right.getText() + ", ";
 		return visitChildren(ctx) + stmt;
 	}
 
@@ -351,13 +335,12 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 	@Override
 	public String visitParams(ParamsContext ctx) {
 		argCount++;
-		return "param" + argCount + ":" + ctx.varName.getText() + "\n"
-				+ visitChildren(ctx);
+		return "param" + argCount + ":" + ctx.varName.getText() + "\n" + visitChildren(ctx);
 	}
 
 	@Override
 	public String visitTrueExpression(TrueExpressionContext ctx) {
-		return visitChildren(ctx);
+		return "LOAD TRUE\n" + visitChildren(ctx);
 	}
 
 	@Override
@@ -377,15 +360,13 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 
 	@Override
 	public String visitGreaterThanEqual(GreaterThanEqualContext ctx) {
-		String stmt = "BLT " + ctx.left.getText() + ", " + ctx.right.getText()
-				+ ", ";
+		String stmt = "BLT " + ctx.left.getText() + ", " + ctx.right.getText() + ", ";
 		return visitChildren(ctx) + stmt;
 	}
 
 	@Override
 	public String visitLessThanEqual(LessThanEqualContext ctx) {
-		String stmt = "BGT " + ctx.left.getText() + ", " + ctx.right.getText()
-				+ ", ";
+		String stmt = "BGT " + ctx.left.getText() + ", " + ctx.right.getText() + ", ";
 		return visitChildren(ctx) + stmt;
 	}
 
@@ -416,14 +397,12 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 
 	@Override
 	public String visitPrintSymbol(PrintSymbolContext ctx) {
-		return visitChildren(ctx) + "WRITE " + ctx.IDENTIFIER().getText()
-				+ "\n";
+		return visitChildren(ctx) + "WRITE " + ctx.IDENTIFIER().getText() + "\n";
 	}
 
 	@Override
 	public String visitPrintRecursive(PrintRecursiveContext ctx) {
-		return "WRITE " + ctx.IDENTIFIER().getText() + "\n" + visitChildren(ctx)
-				+ "\n";
+		return "WRITE " + ctx.IDENTIFIER().getText() + "\n" + visitChildren(ctx) + "\n";
 	}
 
 	@Override
@@ -443,7 +422,12 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 
 	@Override
 	public String visitFalseExpression(FalseExpressionContext ctx) {
-		return visitChildren(ctx) + "false";
+		return "LOAD FALSE \n" + visitChildren(ctx);
+	}
+
+	@Override
+	public String visitBoolVarAssign(BoolVarAssignContext ctx) {
+		return visitChildren(ctx) + "STORE " + ctx.varName.getText() + "\n";
 	}
 
 	@Override
@@ -463,8 +447,7 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 
 	@Override
 	public String visitMod(ModContext ctx) {
-		String stmt = "MOD\n" + visit(ctx.left) + "\n" + visit(ctx.right)
-				+ "\n";
+		String stmt = "MOD\n" + visit(ctx.left) + "\n" + visit(ctx.right) + "\n";
 		return stmt;
 	}
 

@@ -2,7 +2,7 @@ num z;
 z = 320/90;
 
 bool b;
-b = 15;
+b = false;
 
 if(z > 4) {
 
