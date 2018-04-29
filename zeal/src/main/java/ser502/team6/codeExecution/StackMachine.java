@@ -136,7 +136,9 @@ public class StackMachine {
 		int endIndex = instructionsList.indexOf(labelEnd);
 
 		for (int i = startIndex; i <= endIndex; i++) {
-			instructionsList.remove(startIndex);
+			if(startIndex < instructionsList.size()) {
+				instructionsList.remove(startIndex);
+			}
 		}
 
 		// TODO Auto-generated method stub
