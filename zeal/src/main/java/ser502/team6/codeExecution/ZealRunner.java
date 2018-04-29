@@ -35,7 +35,7 @@ public class ZealRunner {
 
 	public static void main(String[] args) {
 		List<String> instructions = new ArrayList<String>();
-		String sourcePath = "target/" + args[0] + ".zc";
+		String sourcePath = "intermediateCode/" + args[0] + ".zc";
 		String intermediateCode = "";
 		try {
 			Scanner scan = new Scanner(new File(sourcePath));
