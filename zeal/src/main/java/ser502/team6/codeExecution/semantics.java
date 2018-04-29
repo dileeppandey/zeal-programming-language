@@ -2,17 +2,12 @@ package ser502.team6.codeExecution;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Scanner;
 import java.util.Stack;
 
 import ser502.team6.exceptions.ProgramExecutionException;
-import ser502.team6.compiler.Test;
 
 
 public class semantics {
