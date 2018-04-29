@@ -20,6 +20,7 @@ label_command_list_while: (command)+;
             
 //assignment, if, while, function calling
 command: varName=IDENTIFIER '=' expr ';' #VarAssign
+       | varName=IDENTIFIER '=' bool_expr ';' #BoolVarAssign
        | declarations ';'  #VarInit
        | 'if' '(' bool_expr ')' '{' label_command_list_if '}' ('else' '{' label_command_list_else '}')? ';' #IfElseBlock
        | 'while' '(' bool_expr ')' '{' label_command_list_while '}' ';' #WhileBlock
