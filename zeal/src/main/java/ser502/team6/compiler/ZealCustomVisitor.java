@@ -170,7 +170,7 @@ public class ZealCustomVisitor extends zealBaseVisitor<String> {
 		String varName = ctx.varName.getText();
 
 		if (ctx.bool_expr() == null) {
-			return "BOOL " + varName + " = " + visitChildren(ctx);
+			return "BOOL " + varName + visitChildren(ctx);
 		} else {
 			String stmt = "BOOL " + varName + "\nLOAD "
 					+ ctx.bool_expr().getText() + "\nSTORE " + varName;

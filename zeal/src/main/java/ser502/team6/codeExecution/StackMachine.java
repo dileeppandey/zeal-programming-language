@@ -37,6 +37,10 @@ public class StackMachine {
 				Entity entity = new Entity("num", "");
 				symbolTable.insert(instructionsList.get(++currentLine), entity);
 				isPrinting = false;
+			} else if (instructionsList.get(currentLine).equalsIgnoreCase("bool")) {
+				Entity entity = new Entity("bool", "");
+				symbolTable.insert(instructionsList.get(++currentLine), entity);
+				isPrinting = false;
 			} else if (instructionsList.get(currentLine).equalsIgnoreCase("load")) {
 				variableStack.push(instructionsList.get(++currentLine));
 				if (!operatorStack.isEmpty()) {

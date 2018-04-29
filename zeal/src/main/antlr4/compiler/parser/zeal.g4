@@ -39,7 +39,8 @@ initialization_int: varName=IDENTIFIER '=' INT_VAL
 
 //bool datatype initialisation with multiple identifier
 initialization_bool: varName=IDENTIFIER '=' bool_expr
-                   | varName=IDENTIFIER '=' initialization_bool ;
+                   | varName=IDENTIFIER '=' initialization_bool 
+                   | varName=IDENTIFIER;
 
 //boolean evaluations
 bool_expr: 'true' #TrueExpression
