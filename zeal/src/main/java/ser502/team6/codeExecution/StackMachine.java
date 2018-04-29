@@ -2,6 +2,7 @@ package ser502.team6.codeExecution;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Stack;
 
 public class StackMachine {
@@ -9,7 +10,8 @@ public class StackMachine {
 	private Stack<String> variableStack = new Stack<String>();
 	private Stack<String> booleanOperationStack = new Stack<String>();
 	private Stack<String> booleanSymbolsStack = new Stack<String>();
-	private HashMap<String,Integer> whileLoopStatements = new HashMap<String,Integer>();
+	private HashMap<String, Integer> whileLoopStatements = new HashMap<String, Integer>();
+	private Map<String, Boolean> labelBooleanMap = new HashMap<String, Boolean>();
 	SymbolTable symbolTable = new SymbolTable();
 	private int currentLine = 0;
 	private int continuousAdditionToVarStack = 0;
@@ -23,8 +25,7 @@ public class StackMachine {
 	}
 
 	private void iterateOverInstructions() {
-		for (currentLine = 0; currentLine < instructionsList
-				.size(); currentLine++) {
+		for (currentLine = 0; currentLine < instructionsList.size(); currentLine++) {
 
 			// System.out.println(instructionsList.get(currentLine));
 
@@ -36,35 +37,31 @@ public class StackMachine {
 				Entity entity = new Entity("num", "");
 				symbolTable.insert(instructionsList.get(++currentLine), entity);
 				isPrinting = false;
-			} else if (instructionsList.get(currentLine)
-					.equalsIgnoreCase("load")) {
+			} else if (instructionsList.get(currentLine).equalsIgnoreCase("load")) {
 				variableStack.push(instructionsList.get(++currentLine));
-				if(!operatorStack.isEmpty()) {
+				if (!operatorStack.isEmpty()) {
 					continuousAdditionToVarStack++;
 				}
-				
+
 				isPrinting = false;
 			} else if (instructionsList.get(currentLine).equalsIgnoreCase("add")
 					|| instructionsList.get(currentLine).equalsIgnoreCase("mul")
 					|| instructionsList.get(currentLine).equalsIgnoreCase("div")
 					|| instructionsList.get(currentLine).equalsIgnoreCase("sub")
-					|| instructionsList.get(currentLine)
-							.equalsIgnoreCase("mod")) {
+					|| instructionsList.get(currentLine).equalsIgnoreCase("mod")) {
 				operatorStack.push(instructionsList.get(currentLine));
 				continuousAdditionToVarStack = 0;
 				isPrinting = false;
 			} else if (instructionsList.get(currentLine).contains("while:")) {
-				whileLoopStatements.put(instructionsList.get(currentLine).replace(":",""),currentLine);
+				whileLoopStatements.put(instructionsList.get(currentLine).replace(":", ""), currentLine);
 			} else if (instructionsList.get(currentLine).equalsIgnoreCase("goto")) {
-				currentLine = whileLoopStatements.get(instructionsList.get(currentLine+1));
+				currentLine = whileLoopStatements.get(instructionsList.get(currentLine + 1));
 			} else if (instructionsList.get(currentLine).equalsIgnoreCase("store")) {
 				recursivelyPerformStackedOperations();
 
-				symbolTable.symbolTable.get(instructionsList
-						.get(++currentLine)).attribute = variableStack.pop();
+				symbolTable.symbolTable.get(instructionsList.get(++currentLine)).attribute = variableStack.pop();
 				isPrinting = false;
-			} else if (instructionsList.get(currentLine)
-					.equalsIgnoreCase("write")) {
+			} else if (instructionsList.get(currentLine).equalsIgnoreCase("write")) {
 				isPrinting = true;
 				continue;
 			} else if (instructionsList.get(currentLine).equalsIgnoreCase("BGE")
@@ -72,30 +69,33 @@ public class StackMachine {
 					|| instructionsList.get(currentLine).equalsIgnoreCase("BLT")
 					|| instructionsList.get(currentLine).equalsIgnoreCase("BLE")
 					|| instructionsList.get(currentLine).equalsIgnoreCase("BEQ")
-					|| instructionsList.get(currentLine)
-							.equalsIgnoreCase("BNE")) {
+					|| instructionsList.get(currentLine).equalsIgnoreCase("BNE")) {
 				booleanOperationStack.push(instructionsList.get(currentLine));
 				booleanSymbolsStack.push(instructionsList.get(currentLine + 1));
 				booleanSymbolsStack.push(instructionsList.get(currentLine + 2));
 
-				boolean flag = evaluateBoolean();
+				boolean oppositeBooleanEval = evaluateBoolean();
 
-				if (flag == false) {
+				if (oppositeBooleanEval == false) {
 					// TODO: start executing below code
 					currentLine = currentLine + 3;
-					if(instructionsList.get(currentLine).contains("while_end)")) currentLine ++;
+					if (instructionsList.get(currentLine).contains("while_end)"))
+						currentLine++;
+
+					deleteElseStatement(instructionsList.get(currentLine + 3));
+
 				} else {
 					// TODO: go to instructionsList.get(currentLine+3)
 					String labelForElse = instructionsList.get(currentLine + 3) + ":";
 					String labelForWhileEnd = instructionsList.get(currentLine + 3) + ":";
 					currentLine = currentLine + 3;
 					boolean endNotFound = true;
-					while(endNotFound) {
-						if(instructionsList.get(currentLine).equalsIgnoreCase(labelForElse)) {
+					while (endNotFound) {
+						if (instructionsList.get(currentLine).equalsIgnoreCase(labelForElse)) {
 							endNotFound = false;
-						} else if(instructionsList.get(currentLine).equalsIgnoreCase(labelForWhileEnd)){
+						} else if (instructionsList.get(currentLine).equalsIgnoreCase(labelForWhileEnd)) {
 							endNotFound = false;
-						}else {
+						} else {
 							currentLine++;
 						}
 					}
@@ -104,13 +104,10 @@ public class StackMachine {
 
 			if (isPrinting) {
 				if (instructionsList.get(currentLine).contains("\"")) {
-					System.out.println(instructionsList.get(currentLine)
-							.replaceAll("\"", ""));
+					System.out.println(instructionsList.get(currentLine).replaceAll("\"", ""));
 				} else {
-					if (symbolTable.symbolTable
-							.containsKey(instructionsList.get(currentLine))) {
-						System.out.println(symbolTable.symbolTable.get(
-								instructionsList.get(currentLine)).attribute);
+					if (symbolTable.symbolTable.containsKey(instructionsList.get(currentLine))) {
+						System.out.println(symbolTable.symbolTable.get(instructionsList.get(currentLine)).attribute);
 					} else {
 						// TODO: call funtion here
 					}
@@ -126,17 +123,33 @@ public class StackMachine {
 
 	}
 
+	private void deleteElseStatement(String labelIfEnd) {
+
+		String labelStart = labelIfEnd.split("_")[0] + "_" + labelIfEnd.split("_")[1] + "_else:";
+		String labelEnd = labelIfEnd.split("_")[0] + "_" + labelIfEnd.split("_")[1] + "_endelse:";
+
+		int startIndex = instructionsList.indexOf(labelStart);
+		int endIndex = instructionsList.indexOf(labelEnd);
+
+		for (int i = startIndex; i <= endIndex; i++) {
+			instructionsList.remove(startIndex);
+		}
+
+		// TODO Auto-generated method stub
+
+	}
+
 	private boolean evaluateBoolean() {
 
 		String right = booleanSymbolsStack.pop().replaceAll(",", "");
 		String left = booleanSymbolsStack.pop().replaceAll(",", "");
 		String condition = booleanOperationStack.pop();
-		
-		if(!right.matches("[0-9]+") && !right.matches("[0-9.]+")) {
+
+		if (!right.matches("[0-9]+") && !right.matches("[0-9.]+")) {
 			right = symbolTable.symbolTable.get(right).attribute;
 		}
-		
-		if(!left.matches("[0-9]+") && !left.matches("[0-9.]+")) {
+
+		if (!left.matches("[0-9]+") && !left.matches("[0-9.]+")) {
 			left = symbolTable.symbolTable.get(left).attribute;
 		}
 
@@ -192,48 +205,37 @@ public class StackMachine {
 		String var1 = variableStack.pop();
 
 		String operation = operatorStack.pop();
-		try
-		{
-		  Double.parseDouble(var2);
+		try {
+			Double.parseDouble(var2);
+		} catch (NumberFormatException e) {
+			Entity entity_var2 = symbolTable.symbolTable.get(var2);
+			var2 = (entity_var2 == null) ? "NOTDEFINED" : entity_var2.attribute;
 		}
-		catch(NumberFormatException e)
-		{
-		  Entity entity_var2 = symbolTable.symbolTable.get(var2);
-		  var2 = (entity_var2 == null)?"NOTDEFINED":entity_var2.attribute;
-		}
-		try
-		{
-		  Double.parseDouble(var1);
-		}
-		catch(NumberFormatException e)
-		{
-		  Entity entity_var1 = symbolTable.symbolTable.get(var1);
-		  var1 = (entity_var1 == null)?"NOTDEFINED":entity_var1.attribute;
+		try {
+			Double.parseDouble(var1);
+		} catch (NumberFormatException e) {
+			Entity entity_var1 = symbolTable.symbolTable.get(var1);
+			var1 = (entity_var1 == null) ? "NOTDEFINED" : entity_var1.attribute;
 		}
 		switch (operation.toLowerCase()) {
 		case "add":
-			variableStack.push(String.valueOf(
-					Double.parseDouble(var1) + Double.parseDouble(var2)));
+			variableStack.push(String.valueOf(Double.parseDouble(var1) + Double.parseDouble(var2)));
 			continuousAdditionToVarStack = 1;
 			break;
 		case "sub":
-			variableStack.push(String.valueOf(
-					Double.parseDouble(var1) - Double.parseDouble(var2)));
+			variableStack.push(String.valueOf(Double.parseDouble(var1) - Double.parseDouble(var2)));
 			continuousAdditionToVarStack = 1;
 			break;
 		case "div":
-			variableStack.push(String.valueOf(
-					Double.parseDouble(var1) / Double.parseDouble(var2)));
+			variableStack.push(String.valueOf(Double.parseDouble(var1) / Double.parseDouble(var2)));
 			continuousAdditionToVarStack = 1;
 			break;
 		case "mul":
-			variableStack.push(String.valueOf(
-					Double.parseDouble(var1) * Double.parseDouble(var2)));
+			variableStack.push(String.valueOf(Double.parseDouble(var1) * Double.parseDouble(var2)));
 			continuousAdditionToVarStack = 1;
 			break;
 		case "mod":
-			variableStack.push(String.valueOf(
-					Double.parseDouble(var1) % Double.parseDouble(var2)));
+			variableStack.push(String.valueOf(Double.parseDouble(var1) % Double.parseDouble(var2)));
 			continuousAdditionToVarStack = 1;
 			break;
 		default:

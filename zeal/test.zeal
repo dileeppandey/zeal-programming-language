@@ -1,13 +1,11 @@
-num y = 3;
-num n;
-num z = 1;
-n = y + 2;
-if( z < 11 ) {
+num z;
+z = 320/90;
 
-	print("h1");
+if(z > 4) {
+
+ print("true");
+} else {
+
+print("false");
 
 };
-while( z < 13 ) {
-	print(z);
-	z = z+2;
-}; 
