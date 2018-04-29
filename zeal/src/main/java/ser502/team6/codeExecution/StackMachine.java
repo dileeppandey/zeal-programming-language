@@ -94,7 +94,7 @@ public class StackMachine {
 					String labelForWhileEnd = instructionsList.get(currentLine + 3) + ":";
 					currentLine = currentLine + 3;
 					boolean endNotFound = true;
-					while (endNotFound) {
+					while (endNotFound && currentLine < instructionsList.size()) {
 						if (instructionsList.get(currentLine).equalsIgnoreCase(labelForElse)) {
 							endNotFound = false;
 						} else if (instructionsList.get(currentLine).equalsIgnoreCase(labelForWhileEnd)) {
