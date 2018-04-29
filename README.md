@@ -25,7 +25,7 @@
 1. git clone https://github.com/dileeppandey/SER502-Spring2018-Team-6.git
 2. cd SER502-Spring2018-Team-6/zeal
 3. mvn clean install
-4. java -jar target/team6-1-jar-with-dependencies.jar sample/0_HelloWorld.zl
+4. java -jar target/team6-1-jar-with-dependencies.jar sample/0_HelloWorld
 
 
 #### Video Demonstration
