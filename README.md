@@ -22,10 +22,13 @@
 
 ### Build and Run
 
-1. git clone https://github.com/dileeppandey/SER502-Spring2018-Team-6.git
-2. cd SER502-Spring2018-Team-6/zeal
-3. mvn clean install
-4. java -jar target/team6-1-jar-with-dependencies.jar sample/0_HelloWorld
+        1. git clone https://github.com/dileeppandey/SER502-Spring2018-Team-6.git
+        2. cd SER502-Spring2018-Team-6/zeal
+        3. mvn clean install
+        4. java -jar target/team6-1-jar-with-dependencies.jar sample/0_HelloWorld
 
+In the 4th step, DO NOT add the extension **".zl"** to the filename.
 
 #### Video Demonstration
+
+[Here](https://www.google.com) is a link to the video.
