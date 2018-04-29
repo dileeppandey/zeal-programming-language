@@ -1,5 +1,6 @@
 package ser502.team6.compiler;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -12,15 +13,16 @@ import compiler.parser.zealParser;
 
 public class ZealCompiler {
 	public static void main(String[] args) {
-		String path = args[0]+".zeal";
-		String outputFile ="target/"+args[0]+".zc";
+		String path = args[0] + ".zl";
+		String outputFile = "intermediateCode/" + args[0] + ".zc";
+		File intermediateCode = new File(outputFile);
 		ANTLRFileStream input;
 		try {
 			input = new ANTLRFileStream(path);
 			ParseTree tree = parse(input);
-			ZealCustomVisitor vst = new ZealCustomVisitor();
-			String intermediate = vst.visit(tree);
-			PrintWriter out = new PrintWriter(outputFile);
+			ZealCustomVisitor zealCustomVisitor = new ZealCustomVisitor();
+			String intermediate = zealCustomVisitor.visit(tree);
+			PrintWriter out = new PrintWriter(intermediateCode);
 			out.write(intermediate);
 			out.close();
 		} catch (IOException e) {
