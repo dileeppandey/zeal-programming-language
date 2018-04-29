@@ -129,19 +129,22 @@ public class StackMachine {
 
 	private void deleteElseStatement(String labelIfEnd) {
 
-		String labelStart = labelIfEnd.split("_")[0] + "_" + labelIfEnd.split("_")[1] + "_else:";
-		String labelEnd = labelIfEnd.split("_")[0] + "_" + labelIfEnd.split("_")[1] + "_endelse:";
+		try {
+			String labelStart = labelIfEnd.split("_")[0] + "_" + labelIfEnd.split("_")[1] + "_else:";
+			String labelEnd = labelIfEnd.split("_")[0] + "_" + labelIfEnd.split("_")[1] + "_endelse:";
 
-		int startIndex = instructionsList.indexOf(labelStart);
-		int endIndex = instructionsList.indexOf(labelEnd);
+			int startIndex = instructionsList.indexOf(labelStart);
+			int endIndex = instructionsList.indexOf(labelEnd);
 
-		for (int i = startIndex; i <= endIndex; i++) {
-			if(startIndex >= 0) {
-				instructionsList.remove(startIndex);
+			for (int i = startIndex; i <= endIndex; i++) {
+				if (startIndex >= 0) {
+					instructionsList.remove(startIndex);
+				}
 			}
-		}
 
-		// TODO Auto-generated method stub
+		} catch (ArrayIndexOutOfBoundsException e) {
+			// do nothing
+		}
 
 	}
 
