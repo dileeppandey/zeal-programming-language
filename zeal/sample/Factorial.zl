@@ -1,0 +1,11 @@
+num result;
+result = 1;
+
+function num factorial(num n) {
+  if(num == 1) {
+    return 1;
+  }
+  else {
+    return n * factorial(n - 1);
+  };
+}

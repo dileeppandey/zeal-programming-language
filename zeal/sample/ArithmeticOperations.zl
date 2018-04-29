@@ -1,0 +1,22 @@
+num x = 9;
+num y = 2;
+num z;
+num w;
+
+z = x + y;
+print(z);
+
+z = x - y;
+print(z);
+
+z = x * y;
+print(z);
+
+z = x / y;
+print(z);
+
+z = x % y;
+print(z);
+
+w = (x + y) * x - z;
+print(w);
