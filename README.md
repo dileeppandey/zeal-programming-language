@@ -13,8 +13,8 @@
 
 ### Build and Run
 
-        1. git clone https://github.com/dileeppandey/SER502-Spring2018-Team-6.git
-        2. cd SER502-Spring2018-Team-6/zeal
+        1. clone this repo
+        2. cd to the folder
         3. mvn clean install
         4. java -jar target/team6-1-jar-with-dependencies.jar sample/0_HelloWorld
 
@@ -44,10 +44,6 @@ Handles
 
 * Associativity (Left-Associative)
 * Precedence
-
-### Video Demonstration
-
-[Here](https://youtu.be/czM4T8RZrzI) is a link to the video.
 
 ### Still in Progress
 
